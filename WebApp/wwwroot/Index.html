@@ -10,24 +10,13 @@
 <body>
 
     <div id="app">
-       <table>
-           <thead>
-               <tr>
-                   <td>code</td>
-                   <td>name</td>
-                   <td>description</td>
-                   <td>sell_date</td>
-               </tr>
-           </thead>
-           <tbody>
-               <tr v-for="item in allProducts">
-                   <td>{{item.code}}</td>
-                   <td>{{item.name}}</td>
-                   <td>{{item.description}}</td>
-                   <td>{{item.sell_date}}</td>
-               </tr>
-           </tbody>
-       </table>
+        <template>
+            <el-table :data="allProducts" stripe style="width: 100%">
+                <el-table-column  property="name" label="Date" width="180" />
+                <el-table-column  label="Name" width="180" />
+                <el-table-column  label="Address" />
+            </el-table>
+        </template>
     </div>
 
     <script>
@@ -35,9 +24,9 @@
 
         createApp({
             mounted() {
-                axios.get("/api/Products/GetAllProducts")
-                    .then(response => (this.allProducts = response.data))
-            },
+                axios.get("api/Products/GetAllProducts")
+                    .then(response => (this.allProducts = response))
+             },
             data() {
                 return {
                     allProducts:[]
