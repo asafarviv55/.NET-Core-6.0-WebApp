@@ -2,8 +2,9 @@
 {
     public class Product
     {
-        public int ProductID { get; set; }
-        public string SKU { get; set; }
-        public string ProductName { get; set; }
+        public int pcode { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public DateTime sell_date { get; set; }
     }
 }
