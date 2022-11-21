@@ -12,9 +12,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public List<Product> GetAllProducts()
         {
-            //   List<Product> products = DbConn.Get();
-            DbConn.ReadAllSettings();
-            return null;
+            List<Product> products = DbConn.Get();
+            return products;
         }
     }
 }

@@ -13,24 +13,21 @@
        <table>
            <thead>
                <tr>
-                   <td>product ID</td>
-                   <td>SKU</td>
-                   <td>product Name</td>
+                   <td>code</td>
+                   <td>name</td>
+                   <td>description</td>
+                   <td>sell_date</td>
                </tr>
            </thead>
            <tbody>
                <tr v-for="item in allProducts">
-                   <td>{{item.productID}}</td>
-                   <td>{{item.sku}}</td>
-                   <td>{{item.productName}}</td>
+                   <td>{{item.code}}</td>
+                   <td>{{item.name}}</td>
+                   <td>{{item.description}}</td>
+                   <td>{{item.sell_date}}</td>
                </tr>
            </tbody>
        </table>
-      <!--  <div v-for="item in allProducts">
-            <i>{{item.productID}}</i>
-            <b>{{item.sku}}</b>
-            <span>{{item.productName}}</span>
-        </div>-->
     </div>
 
     <script>
