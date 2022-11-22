@@ -15,7 +15,7 @@
         <div class="pure-g">
             <div class="pure-u-1-5"></div>
             <div class="pure-u-3-5">
-                <table class="pure-table pure-table-striped  pure-table-bordered">
+                <table  class="pure-table pure-table-striped  pure-table-bordered">
                     <thead>
                         <tr>
                             <th style="width:80px">Product Code</th>
@@ -25,9 +25,12 @@
                     </thead>
                     <tbody>
                         <tr v-for="row in allProducts">
+                            <td hidden>{{row.id}}</td>
                             <td>{{row.code}}</td>
                             <td>{{row.name}}</td>
                             <td>{{row.description}}</td>
+                            <td >Edit</td>
+                            <td>Delete</td>
                         </tr>
                     </tbody>
 
@@ -42,6 +45,13 @@
     </div>
 
     <script>
+
+     
+
+
+        function editRow(id) {
+            alert(id);
+        }
 
         const App = {
             mounted() {

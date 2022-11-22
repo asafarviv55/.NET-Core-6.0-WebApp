@@ -14,7 +14,7 @@ namespace WebApp.db
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 conn.Open();
-                string commandtext = "select code, name , description , sell_date from products";
+                string commandtext = "select id, code, name , description , sell_date from products";
 
                 SqlCommand cmd = new SqlCommand(commandtext, conn);
 
@@ -24,6 +24,7 @@ namespace WebApp.db
                 {
                     var product = new Product()
                     {
+                        id = Convert.ToInt32(reader["id"]),
                         code = Convert.ToInt32(reader["code"]),
                         name = reader["name"].ToString(),
                         description = reader["description"].ToString(),
