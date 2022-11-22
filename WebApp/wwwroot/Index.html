@@ -3,36 +3,68 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
-    <script src="https://unpkg.com/element-plus"></script>
 </head>
 <body>
 
-    <div id="app">
-        <template>
-            <el-table :data="allProducts" stripe style="width: 100%">
-                <el-table-column  property="name" label="Date" width="180" />
-                <el-table-column  label="Name" width="180" />
-                <el-table-column  label="Address" />
-            </el-table>
-        </template>
+
+
+    <div id="app" style="margin-top:70px">
+        <div class="pure-g">
+            <div class="pure-u-1-5"></div>
+            <div class="pure-u-3-5">
+                <table class="pure-table pure-table-striped  pure-table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width:80px">Product Code</th>
+                            <th style="width:150px">Name</th>
+                            <th style="width:300px">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="row in allProducts">
+                            <td>{{row.code}}</td>
+                            <td>{{row.name}}</td>
+                            <td>{{row.description}}</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="pure-u-1-5"></div>
+        </div>
+
+
+
     </div>
 
     <script>
-        const { createApp } = Vue
 
-        createApp({
+        const App = {
             mounted() {
                 axios.get("api/Products/GetAllProducts")
-                    .then(response => (this.allProducts = response))
-             },
+                    .then(response => {
+                        console.log("response");
+                        this.allProducts = response.data;
+                        this.rKey++;
+                    })
+            },
             data() {
                 return {
-                    allProducts:[]
+                    allProducts: [],
+                    rKey: 0,
+                    message: "Hello Element Plus"
+
                 }
             }
-        }).mount('#app')
+        };
+        const app = Vue.createApp(App);
+        app.mount("#app");
+
+
     </script>
 
 </body>
