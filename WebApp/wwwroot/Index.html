@@ -15,7 +15,7 @@
         <div class="pure-g">
             <div class="pure-u-1-5"></div>
             <div class="pure-u-3-5">
-                <table  class="pure-table pure-table-striped  pure-table-bordered">
+                <table class="pure-table pure-table-striped  pure-table-bordered">
                     <thead>
                         <tr>
                             <th style="width:80px">Product Code</th>
@@ -24,17 +24,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="row in allProducts">
+                        <tr v-for="(row,index) in allProducts">
                             <td hidden>{{row.id}}</td>
                             <td>{{row.code}}</td>
                             <td>{{row.name}}</td>
                             <td>{{row.description}}</td>
-                            <td >Edit</td>
-                            <td>Delete</td>
+                            <td v-on:click="editRow(row.id)">Edit</td>
+                            <td v-on:click="deleteRow(row.id)">Delete</td>
+                            <td></td>
                         </tr>
                     </tbody>
-
                 </table>
+                <div>
+                    <input type="button" value="ADD" v-on:click="AddProduct()"/>
+                </div>
 
             </div>
             <div class="pure-u-1-5"></div>
@@ -48,11 +51,7 @@
 
      
 
-
-        function editRow(id) {
-            alert(id);
-        }
-
+ 
         const App = {
             mounted() {
                 axios.get("api/Products/GetAllProducts")
@@ -67,7 +66,18 @@
                     allProducts: [],
                     rKey: 0,
                     message: "Hello Element Plus"
-
+                }
+            },
+            methods: {
+                editRow(id){
+                    alert(id);
+                }
+                ,
+                deleteRow(id) {
+                    alert(id);
+                },
+                AddProduct() {
+                    alert();
                 }
             }
         };

@@ -6,7 +6,16 @@ namespace WebApp.db
     public class DbConn
     {
 
-        public static List<Product> Get()
+
+
+        public static List<Product> GetProducts1()
+        {
+
+            return new List<Product>();
+        }
+
+
+        public static List<Product> GetProducts()
         {
             var products = new List<Product>();
             //to get the connection string 
