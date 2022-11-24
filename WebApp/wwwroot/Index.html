@@ -30,7 +30,7 @@
                             <td>{{row.name}}</td>
                             <td>{{row.description}}</td>
                             <td v-on:click="editRow(row.id)">Edit</td>
-                            <td v-on:click="deleteRow(row.id)">Delete</td>
+                            <td v-on:click="deleteItem(row.id)">Delete</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -65,19 +65,23 @@
                 return {
                     allProducts: [],
                     rKey: 0,
-                    message: "Hello Element Plus"
+                    message: "Hello Element Plus",
+                    page: 1,
+                    sortColumn: 'id',
+                    sortDirection: 'asc',
+                    filterString: '',
+                    offset:5
                 }
             },
             methods: {
-                editRow(id){
-                    alert(id);
-                }
-                ,
-                deleteRow(id) {
-                    alert(id);
-                },
-                AddProduct() {
-                    alert();
+                refreshData() {
+                    axios.delete('/api/Products/refreshProducts/' + id)
+                        .then(response => {
+                            const index = this.posts.findIndex(post => post.id === id) // find the post index 
+                            if (~index) // if the post exists in array
+                                this.posts.splice(index, 1) //delete the post
+                        });
+
                 }
             }
         };

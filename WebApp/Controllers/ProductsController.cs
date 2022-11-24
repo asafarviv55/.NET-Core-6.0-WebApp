@@ -29,5 +29,20 @@ namespace WebApp.Controllers
 
             return product;
         }
+
+
+
+        [HttpPost]
+        public Product DeleteProduct(Product product)
+        {
+            Console.WriteLine(product.id);
+            Console.WriteLine(product.name);
+            Console.WriteLine(product.description);
+            Console.WriteLine(product.sell_date);
+
+            return product;
+        }
+
+
     }
 }
