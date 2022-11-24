@@ -38,20 +38,12 @@
                 <div>
                     <input type="button" value="ADD" v-on:click="AddProduct()"/>
                 </div>
-
             </div>
             <div class="pure-u-1-5"></div>
         </div>
-
-
-
     </div>
 
     <script>
-
-     
-
- 
         const App = {
             mounted() {
                 axios.get("api/Products/GetAllProducts")
@@ -81,7 +73,6 @@
                             if (~index) // if the post exists in array
                                 this.posts.splice(index, 1) //delete the post
                         });
-
                 }
             }
         };
