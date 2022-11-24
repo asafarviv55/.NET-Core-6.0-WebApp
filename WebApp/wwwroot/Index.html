@@ -76,6 +76,7 @@
                     this.refreshData(this.searctStr);
                 },
                 refreshData(str) {
+                    alert('refreshData str -'+ str)
                     axios.post("api/Products/refreshProducts/"+str)
                         .then(response => {
                             console.log("response");
