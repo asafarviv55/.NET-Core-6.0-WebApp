@@ -18,11 +18,10 @@ namespace WebApp.Controllers
         }
 
 
-
-        [HttpPost]
-        public List<Product> RefreshProducts(String searchStr)
+        [HttpGet]
+        public List<Product> RefreshProducts(String str)
         {
-            List<Product> products = DbConn.GetProductsBySearch(searchStr);
+            List<Product> products = DbConn.GetProductsBySearch(str);
 
 
             return products;
