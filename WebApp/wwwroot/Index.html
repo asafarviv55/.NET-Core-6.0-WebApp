@@ -72,15 +72,16 @@
             },
             methods: {
                 search(event) {
-                    alert(event.target.value);
+                    this.searctStr = event.target.value;
+                    this.refreshData(this.searctStr);
                 },
-                refreshData() {
-                    axios.delete('/api/Products/refreshProducts/' + id)
+                refreshData(str) {
+                    axios.post("api/Products/refreshProducts/"+str)
                         .then(response => {
-                            const index = this.posts.findIndex(post => post.id === id) // find the post index 
-                            if (~index) // if the post exists in array
-                                this.posts.splice(index, 1) //delete the post
-                        });
+                            console.log("response");
+                            this.allProducts = response.data;
+                            this.rKey++;
+                        })
                 }
             }
         };

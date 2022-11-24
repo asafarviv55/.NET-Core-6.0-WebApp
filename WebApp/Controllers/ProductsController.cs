@@ -12,22 +12,20 @@ namespace WebApp.Controllers
         [HttpGet]
         public List<Product> GetAllProducts()
         {
-            List<Product> products = DbConn.GetProducts();
+            List<Product> products = DbConn.GetAllProducts();
 
             return products;
         }
 
 
 
-        [HttpGet]
-        public Product EditProduct(Product product)
+        [HttpPost]
+        public List<Product> RefreshProducts(String searchStr)
         {
-            Console.WriteLine(product.id);
-            Console.WriteLine(product.name);
-            Console.WriteLine(product.description);
-            Console.WriteLine(product.sell_date);
+            List<Product> products = DbConn.GetProductsBySearch(searchStr);
 
-            return product;
+
+            return products;
         }
 
 
