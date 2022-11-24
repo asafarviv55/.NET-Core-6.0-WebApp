@@ -12,7 +12,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public List<Product> GetAllProducts()
         {
-            List<Product> products = DbConn.GetAllProducts();
+            List<Product> products = ProductService.GetAllProducts();
 
             return products;
         }
@@ -21,7 +21,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public List<Product> RefreshProducts(String str)
         {
-            List<Product> products = DbConn.GetProductsBySearch(str);
+            List<Product> products = ProductService.GetProductsBySearch(str);
 
 
             return products;

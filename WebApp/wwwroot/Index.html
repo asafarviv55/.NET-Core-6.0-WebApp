@@ -22,9 +22,11 @@
                 <table class="pure-table pure-table-striped  pure-table-bordered">
                     <thead>
                         <tr>
-                            <th style="width:80px">Product Code</th>
-                            <th style="width:150px">Name</th>
-                            <th style="width:300px">Description</th>
+                            <th style="width:80px"  v-on:click="sort(1)">Product Code</th>
+
+                            <th style="width:150px" v-on:click="sort(2)">Name</th>
+
+                            <th style="width:300px" v-on:click="sort(3)">Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -63,7 +65,7 @@
                     rKey: 0,
                     message: "Hello Element Plus",
                     page: 1,
-                    sortColumn: 'id',
+                    sortColumn: 1,
                     sortDirection: 'asc',
                     filterString: '',
                     offset: 5,
@@ -71,13 +73,17 @@
                 }
             },
             methods: {
+                sort(event) {
+                    this.sortColumn = event.target.value;
+                    this.refreshData(this.sortColumn);
+                },
                 search(event) {
                     this.searctStr = event.target.value;
                     this.refreshData(this.searctStr);
                 },
                 refreshData(str) {
                     var querystr = '';
-                    if (str == '')
+                     if (str == '')
                         querystr = "api/Products/GetAllProducts";
                     else
                         querystr = "api/Products/RefreshProducts?str=" + str;
