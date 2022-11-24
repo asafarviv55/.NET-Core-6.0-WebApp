@@ -15,6 +15,10 @@
         <div class="pure-g">
             <div class="pure-u-1-5"></div>
             <div class="pure-u-3-5">
+                <div>
+                    <label for="searchBox">Please Type String to Search </label><br>
+                    <input type="text" id="searchBox" value="" v-on:input="search" />
+                </div>
                 <table class="pure-table pure-table-striped  pure-table-bordered">
                     <thead>
                         <tr>
@@ -36,7 +40,7 @@
                     </tbody>
                 </table>
                 <div>
-                    <input type="button" value="ADD" v-on:click="AddProduct()"/>
+                    <input type="button" value="ADD" v-on:click="AddProduct()" />
                 </div>
             </div>
             <div class="pure-u-1-5"></div>
@@ -62,10 +66,14 @@
                     sortColumn: 'id',
                     sortDirection: 'asc',
                     filterString: '',
-                    offset:5
+                    offset: 5,
+                    searctStr: ''
                 }
             },
             methods: {
+                search(event) {
+                    alert(event.target.value);
+                },
                 refreshData() {
                     axios.delete('/api/Products/refreshProducts/' + id)
                         .then(response => {
