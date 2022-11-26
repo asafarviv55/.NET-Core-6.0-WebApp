@@ -16,13 +16,17 @@
             <div class="pure-u-1-5"></div>
             <div class="pure-u-3-5">
                 <div>
+                    <label for="searchBox">Create All Products </label><br>
+                    <input type="button" id="create" value="InitialProducts" v-on:click="create()" />
+                </div>
+                <div>
                     <label for="searchBox">Please Type String to Search </label><br>
-                    <input type="text" id="searchBox" value=""  v-on:input="search"/>
+                    <input type="text" id="searchBox" value="" v-on:input="search" />
                 </div>
                 <table class="pure-table pure-table-striped  pure-table-bordered">
                     <thead>
                         <tr>
-                            <th style="width:80px"  v-on:click="sort(1)">Product Code</th>
+                            <th style="width:80px" v-on:click="sort(1)">Product Code</th>
 
                             <th style="width:150px" v-on:click="sort(2)">Name</th>
 
@@ -54,7 +58,7 @@
             mounted() {
                 axios.get("api/Products/GetAllProducts")
                     .then(response => {
-                        console.log("response");
+                       // console.log("response");
                         this.allProducts = response.data;
                         this.rKey++;
                     })
@@ -73,6 +77,19 @@
                 }
             },
             methods: {
+                create() {
+                    querystr = "api/Products/InitialProducts";
+                    axios.get(querystr);
+                    this.refreshData('');
+                },
+                editRow(id) {
+                    alert(id);
+                },
+                deleteItem(id) {
+                    querystr = "api/Products/DeleteProduct?id=" + id;
+                    axios.delete(querystr);   
+                    this.refreshData(this.sortColumn);
+                },
                 sort(event) {
                     this.sortColumn = event.target.value;
                     this.refreshData(this.sortColumn);
@@ -83,7 +100,7 @@
                 },
                 refreshData(str) {
                     var querystr = '';
-                     if (str == '')
+                    if (str == '' || str == undefined)
                         querystr = "api/Products/GetAllProducts";
                     else
                         querystr = "api/Products/RefreshProducts?str=" + str;

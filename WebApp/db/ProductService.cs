@@ -8,11 +8,164 @@ namespace WebApp.db
     {
 
 
-
-        public static List<Product> GetProductById(Product product)
+        public static void RecreateDB()
         {
 
-            return new List<Product>();
+            //to get the connection string 
+            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+
+            using (SqlConnection conn = new SqlConnection(connectionstring))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string commandtext = "RecreateDB";
+
+
+                    SqlCommand cmd = new SqlCommand(commandtext, conn);
+
+
+                    cmd.ExecuteNonQuery();
+
+                }
+                finally
+                {
+                    conn.Close();
+
+                }
+
+            }
+
+        }
+
+        public static List<Product> InitialDB()
+        {
+            var products = new List<Product>();
+            //to get the connection string 
+            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+
+            using (SqlConnection conn = new SqlConnection(connectionstring))
+            {
+                try
+                {
+                    conn.Open();
+
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add(new DataColumn("code", typeof(int)));
+                    dt.Columns.Add(new DataColumn("name", typeof(string)));
+                    dt.Columns.Add(new DataColumn("description", typeof(string)));
+                    dt.Columns.Add(new DataColumn("sell_date", typeof(DateTime)));
+
+                    for (int i = 1; i <= 10; i++)
+                    {
+                        DataRow dr = dt.NewRow();
+                        dr["code"] = i;
+                        dr["name"] = i + " name";
+                        dr["description"] = "product description " + i;
+                        dr["sell_date"] = DateTime.Now;
+
+                        dt.Rows.Add(dr);
+                    }
+                    //create object of SqlBulkCopy which help to insert  
+                    SqlBulkCopy objbulk = new SqlBulkCopy(conn);
+
+                    //assign Destination table name  
+                    objbulk.DestinationTableName = "products";
+
+
+                    objbulk.ColumnMappings.Add("code", "code");
+                    objbulk.ColumnMappings.Add("name", "name");
+                    objbulk.ColumnMappings.Add("description", "description");
+                    objbulk.ColumnMappings.Add("sell_date", "sell_date");
+
+
+                    //insert bulk Records into DataBase.  
+                    objbulk.WriteToServer(dt);
+                    conn.Close();
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+            return products;
+        }
+
+
+
+        public static List<Product> AddProduct()
+        {
+            var products = new List<Product>();
+            //to get the connection string 
+            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
+            {
+                try
+                {
+                    conn.Open();
+                    string commandtext = "addProduct";
+
+                    SqlCommand cmd = new SqlCommand(commandtext, conn);
+
+                    var reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        var product = new Product()
+                        {
+                            id = Convert.ToInt32(reader["id"]),
+                            code = Convert.ToInt32(reader["code"]),
+                            name = reader["name"].ToString(),
+                            description = reader["description"].ToString(),
+                            sell_date = DateTime.Parse(reader["sell_date"].ToString())
+                        };
+                        products.Add(product);
+                    }
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+            return products;
+        }
+
+        public static List<Product> updateProduct()
+        {
+            var products = new List<Product>();
+            //to get the connection string 
+            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
+            {
+                try
+                {
+                    conn.Open();
+                    string commandtext = "updateProduct ";
+
+                    SqlCommand cmd = new SqlCommand(commandtext, conn);
+
+                    var reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        var product = new Product()
+                        {
+                            id = Convert.ToInt32(reader["id"]),
+                            code = Convert.ToInt32(reader["code"]),
+                            name = reader["name"].ToString(),
+                            description = reader["description"].ToString(),
+                            sell_date = DateTime.Parse(reader["sell_date"].ToString())
+                        };
+                        products.Add(product);
+                    }
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+            return products;
         }
 
 
@@ -23,55 +176,65 @@ namespace WebApp.db
             var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
-                conn.Open();
-                string commandtext = "select id, code, name , description , sell_date from products";
-
-                SqlCommand cmd = new SqlCommand(commandtext, conn);
-
-                var reader = cmd.ExecuteReader();
-
-                while (reader.Read())
+                try
                 {
-                    var product = new Product()
+                    conn.Open();
+                    string commandtext = "getAllProducts";
+
+                    SqlCommand cmd = new SqlCommand(commandtext, conn);
+
+                    var reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
                     {
-                        id = Convert.ToInt32(reader["id"]),
-                        code = Convert.ToInt32(reader["code"]),
-                        name = reader["name"].ToString(),
-                        description = reader["description"].ToString(),
-                        sell_date = DateTime.Parse(reader["sell_date"].ToString())
-                    };
-                    products.Add(product);
+                        var product = new Product()
+                        {
+                            id = Convert.ToInt32(reader["id"]),
+                            code = Convert.ToInt32(reader["code"]),
+                            name = reader["name"].ToString(),
+                            description = reader["description"].ToString(),
+                            sell_date = DateTime.Parse(reader["sell_date"].ToString())
+                        };
+                        products.Add(product);
+                    }
                 }
-                conn.Close();
+
+                finally
+                {
+                    conn.Close();
+                }
             }
             return products;
         }
 
-
-        private static String getOrderDirectionByNumber(int col)
+        public static List<Product> DeleteProduct(int id)
         {
-            return col == 0 ? "asc" : "desc";
-        }
-
-        private static String getColumnNameByNumber(int col)
-        {
-            switch (col)
+            var products = new List<Product>();
+            //to get the connection string 
+            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
             {
-                case 1:
-                    return "code";
-                case 2:
-                    return "name";
-                case 3:
-                    return "description";
-                default:
-                    return "sell_date";
+                try
+                {
+                    conn.Open();
+                    string commandtext = "deleteProduct " + id;
+
+                    SqlCommand cmd = new SqlCommand(commandtext, conn);
+
+                    cmd.ExecuteNonQuery();
+
+                }
+                finally
+                {
+                    conn.Close();
+                }
+
             }
+
+            return products;
         }
 
-
-
-
-        public static List<Product> GetAllProductsByOrder(int orderCol, int orderDirection)
+        public static List<Product> GetAllProductsOrderBy(int orderCol, int orderDirection)
         {
             var products = new List<Product>();
             var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
@@ -79,10 +242,7 @@ namespace WebApp.db
             {
                 conn.Open();
                 string commandtext = "";
-                if (orderCol == -1)
-                    commandtext = "select id, code, name , description , sell_date from products";
-                else
-                    commandtext = "select id, code, name , description , sell_date from products" + " order by " + getColumnNameByNumber(orderCol) + " " + getOrderDirectionByNumber(orderDirection);
+                commandtext = "getProductsOrderByColumn " + getColumnNameByNumber(orderCol) + " " + getOrderDirectionByNumber(orderDirection);
 
 
 
@@ -105,16 +265,14 @@ namespace WebApp.db
             return products;
         }
 
-
-
-
-        public static List<Product> GetProductsBySearch(String searchStr)
+        public static List<Product> searchProduct(String searchStr)
         {
             var products = new List<Product>();
             //to get the connection string 
             var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
             using (SqlConnection con = new SqlConnection(connectionstring))
             {
+
                 using (SqlCommand cmd = new SqlCommand("SearchByNameOrCode", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -139,7 +297,25 @@ namespace WebApp.db
             return products;
         }
 
+        private static String getOrderDirectionByNumber(int col)
+        {
+            return col == 0 ? "asc" : "desc";
+        }
 
+        private static String getColumnNameByNumber(int col)
+        {
+            switch (col)
+            {
+                case 1:
+                    return "code";
+                case 2:
+                    return "name";
+                case 3:
+                    return "description";
+                default:
+                    return "sell_date";
+            }
+        }
 
     }
 }

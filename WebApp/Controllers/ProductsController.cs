@@ -9,6 +9,15 @@ namespace WebApp.Controllers
     public class ProductsController : ControllerBase
     {
 
+
+        [HttpGet]
+        public void InitialProducts()
+        {
+            ProductService.RecreateDB();
+            ProductService.InitialDB();
+        }
+
+
         [HttpGet]
         public List<Product> GetAllProducts()
         {
@@ -21,7 +30,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public List<Product> RefreshProducts(String str)
         {
-            List<Product> products = ProductService.GetProductsBySearch(str);
+            List<Product> products = ProductService.searchProduct(str);
 
 
             return products;
@@ -29,16 +38,18 @@ namespace WebApp.Controllers
 
 
 
-        [HttpPost]
-        public Product DeleteProduct(Product product)
+        [HttpDelete]
+        public void DeleteProduct(int id)
         {
-            Console.WriteLine(product.id);
-            Console.WriteLine(product.name);
-            Console.WriteLine(product.description);
-            Console.WriteLine(product.sell_date);
-
-            return product;
+            ProductService.DeleteProduct(id);
         }
+
+
+
+
+
+
+
 
 
     }
