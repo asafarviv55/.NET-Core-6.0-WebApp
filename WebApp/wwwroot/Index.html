@@ -70,7 +70,7 @@
                     message: "Hello Element Plus",
                     page: 1,
                     sortColumn: 1,
-                    sortDirection: 'asc',
+                    sortDirection: 1,
                     filterString: '',
                     offset: 5,
                     searctStr: ''
@@ -88,23 +88,37 @@
                 deleteItem(id) {
                     querystr = "api/Products/DeleteProduct?id=" + id;
                     axios.delete(querystr);   
-                    this.refreshData(this.sortColumn);
+                    this.refreshData();
                 },
-                sort(event) {
-                    this.sortColumn = event.target.value;
-                    this.refreshData(this.sortColumn);
+                sort(col) {
+                    if (this.sortDirection == 1)
+                        this.sortDirection = 0;
+                    else
+                        this.sortDirection = 1;
+                    var querystr = "api/Products/GetAllProductsOrderBy?orderCol=" + col + "&orderDirection=" + this.sortDirection;
+
+                    axios.get(querystr)
+                        .then(response => {
+                            this.allProducts = response.data;
+                            this.rKey++;
+                        })
+
+                    this.refreshData();
+
                 },
                 search(event) {
                     this.searctStr = event.target.value;
-                    this.refreshData(this.searctStr);
-                },
-                refreshData(str) {
-                    var querystr = '';
-                    if (str == '' || str == undefined)
-                        querystr = "api/Products/GetAllProducts";
+                    if (this.searctStr == '' || this.searctStr == undefined)
+                        this.refreshData();
                     else
-                        querystr = "api/Products/RefreshProducts?str=" + str;
-
+                        axios.get("api/Products/SearchProducts?str=" + this.searctStr)
+                        .then(response => {
+                            this.allProducts = response.data;
+                            this.rKey++;
+                        })
+                },
+                refreshData() {
+                    querystr = "api/Products/GetAllProducts";
                     axios.get(querystr)
                             .then(response => {
                                 this.allProducts = response.data;

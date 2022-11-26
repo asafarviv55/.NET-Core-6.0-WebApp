@@ -207,7 +207,7 @@ namespace WebApp.db
             return products;
         }
 
-        public static List<Product> DeleteProduct(int id)
+        public static void DeleteProduct(int id)
         {
             var products = new List<Product>();
             //to get the connection string 
@@ -217,7 +217,7 @@ namespace WebApp.db
                 try
                 {
                     conn.Open();
-                    string commandtext = "deleteProduct " + id;
+                    string commandtext = "DeleteProduct " + id;
 
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
 
@@ -231,7 +231,6 @@ namespace WebApp.db
 
             }
 
-            return products;
         }
 
         public static List<Product> GetAllProductsOrderBy(int orderCol, int orderDirection)
@@ -242,7 +241,7 @@ namespace WebApp.db
             {
                 conn.Open();
                 string commandtext = "";
-                commandtext = "getProductsOrderByColumn " + getColumnNameByNumber(orderCol) + " " + getOrderDirectionByNumber(orderDirection);
+                commandtext = "getProductsOrderByColumn " + "'" + getColumnNameByNumber(orderCol) + "' , '" + getOrderDirectionByNumber(orderDirection) + "' ";
 
 
 

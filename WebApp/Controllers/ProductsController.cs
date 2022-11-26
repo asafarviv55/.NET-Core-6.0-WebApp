@@ -28,15 +28,36 @@ namespace WebApp.Controllers
 
 
         [HttpGet]
-        public List<Product> RefreshProducts(String str)
+        public List<Product> RefreshProducts()
         {
-            List<Product> products = ProductService.searchProduct(str);
+            List<Product> products = ProductService.GetAllProducts();
 
 
             return products;
         }
 
 
+        [HttpGet]
+        public List<Product> GetAllProductsOrderBy(int orderCol, int orderDirection)
+        {
+            List<Product> products = ProductService.GetAllProductsOrderBy(orderCol, orderDirection);
+
+
+            return products;
+        }
+
+
+
+
+
+        [HttpGet]
+        public List<Product> SearchProducts(String str)
+        {
+            List<Product> products = ProductService.searchProduct(str);
+
+
+            return products;
+        }
 
         [HttpDelete]
         public void DeleteProduct(int id)
