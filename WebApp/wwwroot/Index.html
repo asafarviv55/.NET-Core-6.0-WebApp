@@ -15,8 +15,11 @@
         <div class="pure-g">
             <div class="pure-u-1-5"></div>
             <div class="pure-u-3-5">
+
                 <div>
-                    <label for="searchBox">Create All Products </label><br>
+                    <label for="searchBox">Refresh All Products </label>
+                    <input type="button" id="refresh" value="Refresh" v-on:click="refreshData()" /><br>
+                    <label for="searchBox">Create All Products </label>
                     <input type="button" id="create" value="InitialProducts" v-on:click="create()" />
                 </div>
                 <div>
