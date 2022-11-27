@@ -2,34 +2,56 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <!-- Add this to <head> -->
+    <!-- Load required Bootstrap and BootstrapVue CSS -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+
+    <!-- Load polyfills to support older browsers -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+
+    <!-- Load Vue followed by BootstrapVue -->
+    <script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+
+    <!-- Load the following for BootstrapVueIcons support -->
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 <body>
 
 
-
+    
     <div id="app" style="margin-top:70px">
-        <div class="pure-g">
-            <div class="pure-u-1-5"></div>
-            <div class="pure-u-3-5">
-
+        <div class="container">
+          
                 <div>
                     <label for="searchBox">Refresh All Products </label>
                     <input type="button" id="refresh" value="Refresh" v-on:click="refreshData()" /><br>
                     <label for="searchBox">Create All Products </label>
-                    <input type="button" id="create" value="InitialProducts" v-on:click="create()" />
-                </div>
-                <div>
-                    <label for="searchBox">Please Type String to Search </label><br>
+                    <input type="button" id="create" value="InitialProducts" v-on:click="create()" /><br>
+                    <label for="searchBox">Please Type String to Search </label>
                     <input type="text" id="searchBox" value="" v-on:input="search" />
                 </div>
-                <table class="pure-table pure-table-striped  pure-table-bordered">
+
+
+
+                <table id="myTable" class=" table order-list">
                     <thead>
                         <tr>
-                            <th style="width:80px" v-on:click="sort(1)">Product Code</th>
+                            <th style="width:80px" v-on:click="sort(1)" >Product Code</th>
 
                             <th style="width:150px" v-on:click="sort(2)">Name</th>
 
@@ -39,35 +61,73 @@
                     <tbody>
                         <tr v-for="(row,index) in allProducts">
                             <td hidden>{{row.id}}</td>
-                            <td>{{row.code}}</td>
-                            <td>{{row.name}}</td>
-                            <td>{{row.description}}</td>
-                            <td v-on:click="editRow(row.id)">Edit</td>
+                            <td name="code">{{row.code}}</td>
+                            <td name="name">{{row.name}}</td>
+                            <td name="description">{{row.description}}</td>
+                            <td  v-on:click="editRow(row.id)">Edit</td>
                             <td v-on:click="deleteItem(row.id)">Delete</td>
                             <td></td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" style="text-align: left;">
+                                <input type="button" class="btn btn-lg btn-block " id="addrow" value="Add Row" />
+                            </td>
+                        </tr>
+                        <tr>
+                        </tr>
+                    </tfoot>
                 </table>
                 <div>
-                    <input type="button" value="ADD" v-on:click="AddProduct()" />
+                    <input type="button" class="add" value="ADD" v-on:click="AddProduct()" />
                 </div>
             </div>
             <div class="pure-u-1-5"></div>
         </div>
     </div>
 
+   
+        <script>
+            $(document).ready(function(){
+                var counter = 0;
+
+                $("#addrow").on("click", function () {
+                    var newRow = $("<tr>");
+                    var cols = "";
+
+                    cols += '<td><input type="text" class="form-control" name="code' + counter + '"/></td>';
+                    cols += '<td><input type="text" class="form-control" name="name' + counter + '"/></td>';
+                    cols += '<td><input type="text" class="form-control" name="description' + counter + '"/></td>';
+                    cols += '<td><input type="text" class="form-control" name="edit' + counter + '"/></td>';
+
+                    cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
+                    newRow.append(cols);
+                    $("table.order-list").append(newRow);
+                    counter++;
+                });
+
+                $("table.order-list").on("click", ".ibtnDel", function (event) {
+                    $(this).closest("tr").remove();       
+                    counter -= 1
+                });
+           
+            });
+    
+    </script>
+
     <script>
         const App = {
             mounted() {
                 axios.get("api/Products/GetAllProducts")
                     .then(response => {
-                       // console.log("response");
                         this.allProducts = response.data;
                         this.rKey++;
                     })
             },
             data() {
                 return {
+                    items:[],
                     allProducts: [],
                     rKey: 0,
                     message: "Hello Element Plus",
@@ -90,7 +150,7 @@
                 },
                 deleteItem(id) {
                     querystr = "api/Products/DeleteProduct?id=" + id;
-                    axios.delete(querystr);   
+                    axios.delete(querystr);
                     this.refreshData();
                 },
                 sort(col) {
@@ -115,18 +175,18 @@
                         this.refreshData();
                     else
                         axios.get("api/Products/SearchProducts?str=" + this.searctStr)
-                        .then(response => {
-                            this.allProducts = response.data;
-                            this.rKey++;
-                        })
-                },
-                refreshData() {
-                    querystr = "api/Products/GetAllProducts";
-                    axios.get(querystr)
                             .then(response => {
                                 this.allProducts = response.data;
                                 this.rKey++;
                             })
+                },
+                refreshData() {
+                    querystr = "api/Products/GetAllProducts";
+                    axios.get(querystr)
+                        .then(response => {
+                            this.allProducts = response.data;
+                            this.rKey++;
+                        })
                 }
             }
         };
