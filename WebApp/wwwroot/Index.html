@@ -95,13 +95,13 @@
                 $("#addrow").on("click", function () {
                     var newRow = $("<tr>");
                     var cols = "";
-
-                    cols += '<td><input type="text" class="form-control" name="code' + counter + '"/></td>';
+                      cols += '<td></td>';
                     cols += '<td><input type="text" class="form-control" name="name' + counter + '"/></td>';
                     cols += '<td><input type="text" class="form-control" name="description' + counter + '"/></td>';
-                    cols += '<td><input type="text" class="form-control" name="edit' + counter + '"/></td>';
 
                     cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
+                    cols += '<td><input type="button" class="btn btn-md" v-on:click="addRow()" value="Submit"></td>';
+  
                     newRow.append(cols);
                     $("table.order-list").append(newRow);
                     counter++;
@@ -140,6 +140,15 @@
                 }
             },
             methods: {
+                addRow(){
+                    querystr = "api/Products/AddNewProduct";
+                    axios.get(querystr)
+                        .then(response => {
+                            this.allProducts = response.data;
+                            this.rKey++;
+                        })
+
+                },
                 create() {
                     querystr = "api/Products/InitialProducts";
                     axios.get(querystr);

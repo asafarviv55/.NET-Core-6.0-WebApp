@@ -47,6 +47,15 @@ namespace WebApp.Controllers
         }
 
 
+        [HttpGet]
+        public List<Product> addNewProduct()
+        {
+            List<Product> products = ProductService.AddNewProduct();
+
+
+            return products;
+        }
+
 
 
 
