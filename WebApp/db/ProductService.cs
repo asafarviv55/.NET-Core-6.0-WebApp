@@ -94,7 +94,7 @@ namespace WebApp.db
 
 
 
-        public static List<Product> AddProduct(int code, String name, String description)
+        public static void AddProduct(int code, String name, String description)
         {
             var products = new List<Product>();
             //to get the connection string 
@@ -108,7 +108,7 @@ namespace WebApp.db
 
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
 
-                    var reader = cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
 
                 }
                 finally
@@ -116,10 +116,10 @@ namespace WebApp.db
                     conn.Close();
                 }
             }
-            return products;
+
         }
 
-        public static List<Product> updateProduct()
+        public static void updateProduct(int id, int code, String name, String description)
         {
             var products = new List<Product>();
             //to get the connection string 
@@ -129,31 +129,17 @@ namespace WebApp.db
                 try
                 {
                     conn.Open();
-                    string commandtext = "updateProduct ";
+                    string commandtext = "UpdateProduct " + id + " , " + code + " , '" + name + "' , '" + description + "' ,'" + DateTime.Now + "' ";
 
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
 
-                    var reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        var product = new Product()
-                        {
-                            id = Convert.ToInt32(reader["id"]),
-                            code = Convert.ToInt32(reader["code"]),
-                            name = reader["name"].ToString(),
-                            description = reader["description"].ToString(),
-                            sell_date = DateTime.Parse(reader["sell_date"].ToString())
-                        };
-                        products.Add(product);
-                    }
+                    cmd.ExecuteNonQuery();
                 }
                 finally
                 {
                     conn.Close();
                 }
             }
-            return products;
         }
 
 
@@ -167,7 +153,7 @@ namespace WebApp.db
                 try
                 {
                     conn.Open();
-                    string commandtext = "getAllProducts";
+                    string commandtext = "GetAllProducts";
 
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
 
@@ -229,7 +215,7 @@ namespace WebApp.db
             {
                 conn.Open();
                 string commandtext = "";
-                commandtext = "getProductsOrderByColumn " + "'" + getColumnNameByNumber(orderCol) + "' , '" + getOrderDirectionByNumber(orderDirection) + "' ";
+                commandtext = "GetProductsOrderByColumn " + "'" + getColumnNameByNumber(orderCol) + "' , '" + getOrderDirectionByNumber(orderDirection) + "' ";
 
 
 

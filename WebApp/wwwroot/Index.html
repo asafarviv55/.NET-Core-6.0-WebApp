@@ -76,12 +76,14 @@
                     <tfoot>
                         <tr>
                             <td colspan="5" style="text-align: left;">
-                                <input type="button" class="btn btn-lg btn-block "  id="addrow" value="Add Row" />
+                                <input type="button" class="btn btn-lg btn-block " id="addrow" value="Add Row" />
                             </td>
                         </tr>
                         <tr>
                             <td colspan="5" style="text-align: left;">
-                                <input type="button" id="submitRow" value="submitRow" v-on:click="addRow();refreshData();" /><br>
+                                <input type="button" id="submitRow" value="submitRow" v-on:click="addRow();" />
+                                <label for="searchBox">Refresh All Products </label>
+                                <input type="button" id="refresh" value="Refresh" v-on:click="refreshData()" /><br>
                             </td>
                         </tr>
                     </tfoot>
@@ -99,9 +101,9 @@
                 $("#addrow").on("click", function () {
                     var newRow = $("<tr id='newRow'>");
                     var cols = "";
-                     cols += '<td><input type="text" class="form-control" id="newCode" name="code"' + counter + '"/></td>';
-                    cols += '<td><input type="text" class="form-control" id="newName" name="name"' + counter + '"/></td>';
-                    cols += '<td><input type="text" class="form-control" id="newDescription" name="description"' + counter + '"/></td>';
+                     cols += '<td><input type="text" class="form-control" value="" id="newCode" name="code"' + counter + '"/></td>';
+                    cols += '<td><input type="text" class="form-control" value="" id="newName" name="name"' + counter + '"/></td>';
+                    cols += '<td><input type="text" class="form-control"  value="" id="newDescription" name="description"' + counter + '"/></td>';
                     cols += '<td></td>';
 
                     cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
@@ -111,14 +113,31 @@
                     counter++;
                 });
 
+
+                $("#editRow").on("click", function () {
+                    var newRow = $("<tr id='newRowEdit'>");
+                    var cols = "";
+                    cols += '<td><input type="text" class="form-control" value="" id="newEditCode" name="code"' + counter + '"/></td>';
+                    cols += '<td><input type="text" class="form-control" value="" id="newEditName" name="name"' + counter + '"/></td>';
+                    cols += '<td><input type="text" class="form-control"  value="" id="newEditDescription" name="description"' + counter + '"/></td>';
+                    cols += '<td></td>';
+
+                    cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
+
+                    newRow.append(cols);
+                    $("table.order-list").append(newRow);
+                    counter++;
+                });
+
+
+
+
+
+
                 $("table.order-list").on("click", ".ibtnDel", function (event) {
                     $(this).closest("tr").remove();       
                     counter -= 1
                 });
-           
-                 
-           
-
 
             });
     
@@ -168,8 +187,15 @@
                     this.refreshData();
                 },
                 editRow(id) {
-                    alert(id);
-                },
+                    this.newCode1 = $('#newEditCode').val();
+                    this.newName1 = $('#newEditDescription').val();
+                    this.newDescription1 = $('#newEditName').val();
+ 
+                    querystr = "api/Products/UpdateProduct?id=" + id + "&code=" + this.newCode1 + "&name=" + this.newName1 + "&description="
+                        + this.newDescription1;
+                    axios.get(querystr);
+
+                 },
                 deleteItem(id) {
                     querystr = "api/Products/DeleteProduct?id=" + id;
                     axios.delete(querystr);

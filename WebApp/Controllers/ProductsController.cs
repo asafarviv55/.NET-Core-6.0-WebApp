@@ -48,15 +48,17 @@ namespace WebApp.Controllers
 
 
         [HttpGet]
-        public List<Product> AddNewProduct(int code, String name, String description)
+        public void AddNewProduct(int code, String name, String description)
         {
-            List<Product> products = ProductService.AddProduct(code, name, description);
-
-
-            return products;
+            ProductService.AddProduct(code, name, description);
         }
 
 
+        [HttpGet]
+        public void UpdateProduct(int id, int code, String name, String description)
+        {
+            ProductService.updateProduct(id, code, name, description);
+        }
 
 
         [HttpGet]
