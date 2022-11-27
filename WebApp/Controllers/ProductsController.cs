@@ -48,9 +48,9 @@ namespace WebApp.Controllers
 
 
         [HttpGet]
-        public List<Product> addNewProduct()
+        public List<Product> AddNewProduct(int code, String name, String description)
         {
-            List<Product> products = ProductService.AddNewProduct();
+            List<Product> products = ProductService.AddProduct(code, name, description);
 
 
             return products;

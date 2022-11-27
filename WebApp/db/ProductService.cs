@@ -94,7 +94,7 @@ namespace WebApp.db
 
 
 
-        public static List<Product> AddProduct()
+        public static List<Product> AddProduct(int code, String name, String description)
         {
             var products = new List<Product>();
             //to get the connection string 
@@ -104,24 +104,12 @@ namespace WebApp.db
                 try
                 {
                     conn.Open();
-                    string commandtext = "addProduct";
+                    string commandtext = "AddProduct " + code + " , '" + name + "' , '" + description + "' ,'" + DateTime.Now + "' ";
 
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
 
-                    var reader = cmd.ExecuteReader();
+                    var reader = cmd.ExecuteNonQuery();
 
-                    while (reader.Read())
-                    {
-                        var product = new Product()
-                        {
-                            id = Convert.ToInt32(reader["id"]),
-                            code = Convert.ToInt32(reader["code"]),
-                            name = reader["name"].ToString(),
-                            description = reader["description"].ToString(),
-                            sell_date = DateTime.Parse(reader["sell_date"].ToString())
-                        };
-                        products.Add(product);
-                    }
                 }
                 finally
                 {

@@ -51,11 +51,14 @@
                 <table id="myTable" class=" table order-list">
                     <thead>
                         <tr>
-                            <th style="width:80px" v-on:click="sort(1)" >Product Code</th>
+                            <th style="width:80px" v-on:click="sort(1)">Product Code</th>
 
                             <th style="width:150px" v-on:click="sort(2)">Name</th>
 
                             <th style="width:300px" v-on:click="sort(3)">Description</th>
+
+                            <th style="width:300px" v-on:click="sort(4)">Sell Date</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -64,7 +67,8 @@
                             <td name="code">{{row.code}}</td>
                             <td name="name">{{row.name}}</td>
                             <td name="description">{{row.description}}</td>
-                            <td  v-on:click="editRow(row.id)">Edit</td>
+                            <td name="sell_date">{{row.sell_date}}</td>
+                            <td v-on:click="editRow(row.id)">Edit</td>
                             <td v-on:click="deleteItem(row.id)">Delete</td>
                             <td></td>
                         </tr>
@@ -72,35 +76,35 @@
                     <tfoot>
                         <tr>
                             <td colspan="5" style="text-align: left;">
-                                <input type="button" class="btn btn-lg btn-block " id="addrow" value="Add Row" />
+                                <input type="button" class="btn btn-lg btn-block "  id="addrow" value="Add Row" />
                             </td>
                         </tr>
                         <tr>
+                            <td colspan="5" style="text-align: left;">
+                                <input type="button" id="submitRow" value="submitRow" v-on:click="addRow();refreshData" /><br>
+                            </td>
                         </tr>
                     </tfoot>
                 </table>
-                <div>
-                    <input type="button" class="add" value="ADD" v-on:click="AddProduct()" />
-                </div>
+                
             </div>
             <div class="pure-u-1-5"></div>
         </div>
-    </div>
-
+ 
    
         <script>
             $(document).ready(function(){
                 var counter = 0;
 
                 $("#addrow").on("click", function () {
-                    var newRow = $("<tr>");
+                    var newRow = $("<tr id='newRow'>");
                     var cols = "";
-                      cols += '<td></td>';
-                    cols += '<td><input type="text" class="form-control" name="name' + counter + '"/></td>';
-                    cols += '<td><input type="text" class="form-control" name="description' + counter + '"/></td>';
+                     cols += '<td><input type="text" class="form-control" id="newCode" name="code"' + counter + '"/></td>';
+                    cols += '<td><input type="text" class="form-control" id="newName" name="name"' + counter + '"/></td>';
+                    cols += '<td><input type="text" class="form-control" id="newDescription" name="description"' + counter + '"/></td>';
+                    cols += '<td></td>';
 
                     cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
-                    cols += '<td><input type="button" class="btn btn-md" v-on:click="addRow()" value="Submit"></td>';
   
                     newRow.append(cols);
                     $("table.order-list").append(newRow);
@@ -112,6 +116,10 @@
                     counter -= 1
                 });
            
+                 
+           
+
+
             });
     
     </script>
@@ -136,17 +144,26 @@
                     sortDirection: 1,
                     filterString: '',
                     offset: 5,
-                    searctStr: ''
+                    searctStr: '',
+                    newCode1: '' ,
+                    newDescription1: '' ,
+                    newName1: '' ,
+                    newSell_date1: ''
                 }
             },
             methods: {
                 addRow(){
-                    querystr = "api/Products/AddNewProduct";
-                    axios.get(querystr)
-                        .then(response => {
-                            this.allProducts = response.data;
-                            this.rKey++;
-                        })
+                    this.newCode1 = $('#newCode').val();
+                    this.newName1 = $('#newDescription').val();
+                    this.newDescription1 = $('#newName').val();
+                    this.newSell_date1 = $('#newSell_date').val();
+
+                    querystr = "api/Products/AddNewProduct?code="+this.newCode1+"&name="+this.newName1+"&description="
+                                +this.newDescription1 +"&sell_date="+this.newSell_date1;
+                    axios.get(querystr);
+                    $("newRow").closest("tr").remove();    
+                     this.refreshData('');
+
 
                 },
                 create() {
