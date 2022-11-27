@@ -81,7 +81,7 @@
                         </tr>
                         <tr>
                             <td colspan="5" style="text-align: left;">
-                                <input type="button" id="submitRow" value="submitRow" v-on:click="addRow();refreshData" /><br>
+                                <input type="button" id="submitRow" value="submitRow" v-on:click="addRow();refreshData();" /><br>
                             </td>
                         </tr>
                     </tfoot>
@@ -159,17 +159,13 @@
                     this.newSell_date1 = $('#newSell_date').val();
 
                     querystr = "api/Products/AddNewProduct?code="+this.newCode1+"&name="+this.newName1+"&description="
-                                +this.newDescription1 +"&sell_date="+this.newSell_date1;
+                                +this.newDescription1 ;
                     axios.get(querystr);
-                    $("newRow").closest("tr").remove();    
-                     this.refreshData('');
-
-
                 },
                 create() {
                     querystr = "api/Products/InitialProducts";
                     axios.get(querystr);
-                    this.refreshData('');
+                    this.refreshData();
                 },
                 editRow(id) {
                     alert(id);
