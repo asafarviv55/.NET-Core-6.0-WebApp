@@ -1,7 +1,7 @@
 
 const App = {
 	mounted() {
-     alert("asadf");
+     //alert("asadf");
 		axios.get("https://localhost:7163/api/Products/GetAllProducts")
 			.then(response => {
 				this.allProducts = response.data;
@@ -23,24 +23,31 @@ const App = {
 			newCode1: '' ,
 			newDescription1: '' ,
 			newName1: '' ,
-			newSell_date1: ''
+			newSell_date1: '',
+			deleteItemOptional: 1
 		}
 	},
 	methods: {
 		addRow1() {
-			alert("1234")
+
 			this.newCode1 = $('#newCode').val();
 			this.newName1 = $('#newDescription').val();
 			this.newDescription1 = $('#newName').val();
-			alert("aaa");
+
 			querystr = "https://localhost:7163/api/Products/AddNewProduct?code="+this.newCode1+"&name="+this.newName1+"&description="
 						+this.newDescription1 ;
-			axios.get(querystr);
+			axios.get(querystr).then(response => {
+				this.refreshData();
+			});
 		},
 		create() {
 			querystr = "https://localhost:7163/api/Products/InitialProducts";
 			axios.get(querystr);
 			this.refreshData();
+		},
+		updateDeleteItem(id) {
+			//alert(id);
+			this.deleteItemOptional = id;
 		},
 		editRow(id) {
 			this.newCode1 = $('#newEditCode').val();
@@ -52,10 +59,12 @@ const App = {
 			axios.get(querystr);
 
 			},
-		deleteItem(id) {
-			querystr = "https://localhost:7163/api/Products/DeleteProduct?id=" + id;
-			axios.delete(querystr);
-			this.refreshData();
+		deleteItem() {
+			querystr = "https://localhost:7163/api/Products/DeleteProduct?id=" + this.deleteItemOptional;
+			 axios.delete(querystr).then(response => {
+				this.refreshData();
+			})
+			
 		},
 		sort(col) {
 			if (this.sortDirection == 1)

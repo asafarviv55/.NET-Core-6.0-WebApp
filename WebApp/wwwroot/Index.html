@@ -13,6 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@3"></script>
 
     <script src="styles.css"></script>
     <script src="app-jQuery.js"></script>
@@ -25,11 +26,11 @@
                 <div class="table-title">
                     <div class="row">
                         <div class="col-xs-6">
-                            <h2>Manage <b>Employees</b></h2>
+                            <h2>Manage <b>Products</b></h2>
                         </div>
                         <div class="col-xs-6">
                             <a href="#addProductModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Product</span></a>
-                            <a href="#deleteProductModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>
+                            <a href="#deleteProductModal" class="btn btn-danger"  data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>
                         </div>
                     </div>
                 </div>
@@ -58,18 +59,27 @@
                     </thead>
                     <tbody>
                         <tr v-for="(row,index) in allProducts">
+                            <td>
+                                <span class="custom-checkbox">
+                                    <input type="checkbox" id="checkbox1" name="options[]" value="1">
+                                    <label for="checkbox1"></label>
+                                </span>
+                            </td>
                             <td hidden>{{row.id}}</td>
                             <td name="code">{{row.code}}</td>
                             <td name="name">{{row.name}}</td>
                             <td name="description">{{row.description}}</td>
                             <td name="sell_date">{{row.sell_date}}</td>
-                            <td v-on:click="editRow(row.id)">Edit</td>
-                            <td v-on:click="deleteItem(row.id)">Delete</td>
                             <td></td>
+                            <td>
+                                <a href="#editEmployeeModal" class="edit"  data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                <a href="#deleteEmployeeModal"  class="delete"  data-toggle="modal"><i  value="Delete" v-on:click="updateDeleteItem(row.id)" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            </td>
+
                         </tr>
                     </tbody>
                     <tfoot>
-                  
+
                     </tfoot>
 
                 </table>
@@ -87,12 +97,14 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Add Modal HTML -->
-    <div id="addProductModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                     <div class="modal-header">
+
+
+
+        <!-- Add Modal HTML -->
+        <div id="addProductModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
                         <h4 class="modal-title">Add Product</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
@@ -111,65 +123,71 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="button" value="Add" v-on:click="addRow1()" id="addRow" >
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" />
+                        <input type="button" value="Add" v-on:click="addRow1()" data-dismiss="modal" id="addRow" />
                     </div>
-             </div>
-        </div>
-    </div>
-    <!-- Edit Modal HTML -->
-    <div id="editEmployeeModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h4 class="modal-title">Edit Employee</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Address</label>
-                            <textarea class="form-control" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Phone</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="submit" class="btn btn-info" value="Save">
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- Delete Modal HTML -->
-    <div id="deleteEmployeeModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h4 class="modal-title">Delete Employee</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to delete these Records?</p>
-                        <p class="text-warning"><small>This action cannot be undone.</small></p>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="submit" class="btn btn-danger" value="Delete">
-                    </div>
-                </form>
+
+
+
+
+
+
+
+
+        <!-- Edit Modal HTML -->
+        <div id="editEmployeeModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                         <div class="modal-header">
+                            <h4 class="modal-title">Edit Employee</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea class="form-control" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                            <input type="submit" class="btn btn-info" value="Save">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Delete Modal HTML -->
+        <div id="deleteEmployeeModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Delete Employee</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete these Records?</p>
+                            <p class="text-warning"><small>This action cannot be undone.</small></p>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                            <input type="button" class="btn btn-danger" data-dismiss="modal" v-on:click="deleteItem()" value="Delete">
+                        </div>
+                 </div>
             </div>
         </div>
     </div>
