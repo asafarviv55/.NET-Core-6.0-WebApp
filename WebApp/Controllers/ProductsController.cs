@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using WebApp.db;
 using WebApp.Models;
 
 namespace WebApp.Controllers
 {
+    [EnableCors("http://localhost:8080")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class ProductsController : ControllerBase
