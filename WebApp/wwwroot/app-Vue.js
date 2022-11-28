@@ -77,9 +77,9 @@ const App = {
 				.then(response => {
 					this.allProducts = response.data;
 					this.rKey++;
-				})
+ 				})
 
-			this.refreshData();
+			
 
 		},
 		search(event) {
