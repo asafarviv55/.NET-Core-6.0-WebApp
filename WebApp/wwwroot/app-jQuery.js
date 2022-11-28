@@ -6,12 +6,10 @@ $(document).ready(function(){
 		row.id = i;
 	}
 
-
-	 
-
+ 
 
 	$("#myTable").on("click", ".ibtnDel", function (event) {
-		$(this).closest("tr").remove();       
+		$("").remove();       
 		counter -= 1
 	});
 

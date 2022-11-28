@@ -92,8 +92,7 @@
     <div id="addProductModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form method="get" action="@Url.Action("MyAction", "ProductsController")"> 
-                    <div class="modal-header">
+                     <div class="modal-header">
                         <h4 class="modal-title">Add Product</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
@@ -113,10 +112,9 @@
                     </div>
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="submit" class="btn btn-success" value="Add" v-on:click="addRow">
+                        <input type="button" value="Add" v-on:click="addRow1()" id="addRow" >
                     </div>
-                </form>
-            </div>
+             </div>
         </div>
     </div>
     <!-- Edit Modal HTML -->

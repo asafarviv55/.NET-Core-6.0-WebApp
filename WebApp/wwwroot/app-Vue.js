@@ -1,7 +1,7 @@
 
 const App = {
 	mounted() {
-     // alert("asadf");
+     alert("asadf");
 		axios.get("https://localhost:7163/api/Products/GetAllProducts")
 			.then(response => {
 				this.allProducts = response.data;
@@ -27,7 +27,8 @@ const App = {
 		}
 	},
 	methods: {
-		addRow(){
+		addRow1() {
+			alert("1234")
 			this.newCode1 = $('#newCode').val();
 			this.newName1 = $('#newDescription').val();
 			this.newDescription1 = $('#newName').val();
