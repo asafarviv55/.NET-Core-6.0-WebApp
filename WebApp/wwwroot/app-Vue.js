@@ -1,12 +1,20 @@
 
 const App = {
 	mounted() {
-     //alert("asadf");
+		//alert("mounted");
 		axios.get("https://localhost:7163/api/Products/GetAllProducts")
 			.then(response => {
 				this.allProducts = response.data;
 				this.rKey++;
+				 
 			})
+	},
+	updated() {
+		var tbl = document.getElementById("myTable");
+		for (let i in tbl.rows) {
+			let row = tbl.rows[i];
+			row.id = "row_" + i;
+		}
 	},
 	data() {
 		return {
@@ -29,7 +37,6 @@ const App = {
 	},
 	methods: {
 		addRow1() {
-
 			this.newCode1 = $('#newCode').val();
 			this.newName1 = $('#newDescription').val();
 			this.newDescription1 = $('#newName').val();
@@ -50,9 +57,9 @@ const App = {
 			this.deleteItemOptional = id;
 		},
 		editRow(id) {
-			this.newCode1 = $('#newEditCode').val();
-			this.newName1 = $('#newEditDescription').val();
-			this.newDescription1 = $('#newEditName').val();
+		//	$('#editCode').val() = ;
+			//$('#editName').val() = ;
+		//$('#editDecription').val() = ;
 
 			querystr = "https://localhost:7163/api/Products/UpdateProduct?id=" + id + "&code=" + this.newCode1 + "&name=" + this.newName1 + "&description="
 				+ this.newDescription1;
