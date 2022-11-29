@@ -44,38 +44,26 @@ const App = {
 	},
 	methods: {
 		changeNumOfRows() {
-			//alert("changeNumOfRows - " + event.target.value);
-			if (event.target.value == 0 || event.target.value == undefined) {
-			//	alert("value is wrong");
-				return;
+ 			if (event.target.value == 0 || event.target.value == undefined) {
+ 				return;
 			}
 			this.rowsPerPage1 = event.target.value;
 			this.numberOfPages = this.totalRows / this.rowsPerPage1;
-
-			//alert("this.rowsPerPage1 = " + this.rowsPerPage1 + "this.numberOfPages = " + this.numberOfPages)
-
 			querystr = "https://localhost:7163/api/Products/Paging?offset=0&rowsPerPage=" + this.rowsPerPage1;
 			axios.get(querystr).then(response => {
-			//	alert(response.data);
-				this.allProducts = response.data;
-				//this.refreshData();
-			});
+ 				this.allProducts = response.data;
+ 			});
 		},
 		changePage(page) {
-			//alert(" changePage - " + page);
-			if (page == 1)
+ 			if (page == 1)
 				this.offset = 0;
 			else {
 				this.offset = ((page - 1) * this.rowsPerPage1) ;
 			}
-			
-			//alert(this.offset);
-			querystr = "https://localhost:7163/api/Products/Paging?offset=" + this.offset + "&rowsPerPage=" + this.rowsPerPage1;
+ 			querystr = "https://localhost:7163/api/Products/Paging?offset=" + this.offset + "&rowsPerPage=" + this.rowsPerPage1;
 			axios.get(querystr).then(response => {
-				//	alert(response.data);
-				this.allProducts = response.data;
-				//this.refreshData();
-			});
+ 				this.allProducts = response.data;
+ 			});
 		},
 		addRow1() {
 			this.newCode1 = $('#newCode').val();
