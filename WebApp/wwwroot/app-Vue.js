@@ -5,7 +5,7 @@ const App = {
 			.then(response => {
 				this.allProducts = response.data;
 				this.rKey++;
-				 
+				
 			})
 	},
 	updated() {
@@ -30,12 +30,13 @@ const App = {
 			newDescription1: '' ,
 			newName1: '' ,
 			newSell_date1: '',
-			deleteItemOptional: 1
+			deleteItemOptional: 1,
+			totalRows:100			
 		}
 	},
 	methods: {
 		paging() {
-
+			alert(event.target.value);
 		},
 		addRow1() {
 			this.newCode1 = $('#newCode').val();
@@ -93,9 +94,6 @@ const App = {
 					this.allProducts = response.data;
 					this.rKey++;
  				})
-
-			
-
 		},
 		search(event) {
 			this.searctStr = event.target.value;

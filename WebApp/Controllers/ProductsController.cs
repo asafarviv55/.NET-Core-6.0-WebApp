@@ -42,9 +42,9 @@ namespace WebApp.Controllers
 
 
         [HttpGet]
-        public List<Product> Paging()
+        public List<Product> Paging(int offset, int rowsPerPage)
         {
-            List<Product> products = ProductService.Paging();
+            List<Product> products = ProductService.Paging(offset, rowsPerPage);
             return products;
         }
 

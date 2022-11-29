@@ -57,7 +57,7 @@ namespace WebApp.db
                     dt.Columns.Add(new DataColumn("description", typeof(string)));
                     dt.Columns.Add(new DataColumn("sell_date", typeof(DateTime)));
 
-                    for (int i = 1; i <= 10; i++)
+                    for (int i = 1; i <= 10000; i++)
                     {
                         DataRow dr = dt.NewRow();
                         dr["code"] = i;
@@ -171,6 +171,16 @@ namespace WebApp.db
                         };
                         products.Add(product);
                     }
+                    reader.NextResult();
+
+                    while (reader.Read())
+                    {
+                        contacts.Add(new Contact()
+                        {
+                            Id = (int)reader["Id"],
+                            Name = (string)reader["Name"]
+                        });
+                    }
                 }
 
                 finally
@@ -183,7 +193,7 @@ namespace WebApp.db
 
 
 
-        public static List<Product> Paging()
+        public static List<Product> Paging(int offset, int rowsPerPage)
         {
             var products = new List<Product>();
             //to get the connection string 
@@ -193,7 +203,8 @@ namespace WebApp.db
                 try
                 {
                     conn.Open();
-                    string commandtext = "Paging ";
+
+                    string commandtext = "Paging " + offset + " , " + rowsPerPage;
 
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
 

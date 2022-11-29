@@ -30,7 +30,7 @@
                         </div>
                         <div class="col-xs-6">
                             <a href="#addProductModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Product</span></a>
-                            <a href="#deleteProductModal" class="btn btn-danger"  data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>
+                            <a href="#deleteProductModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>
                         </div>
                     </div>
                 </div>
@@ -71,8 +71,8 @@
                             <td name="sell_date">{{row.sell_date}}</td>
                             <td></td>
                             <td>
-                                <a href="#editProductModal" class="edit"  data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteProductModal"  class="delete"  data-toggle="modal"><i  value="Delete" v-on:click="updateDeleteItem(row.id)" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                <a href="#editProductModal" class="edit" data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                <a href="#deleteProductModal" class="delete" data-toggle="modal"><i value="Delete" v-on:click="updateDeleteItem(row.id)" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                             </td>
 
                         </tr>
@@ -82,18 +82,28 @@
                     </tfoot>
 
                 </table>
-                <div class="clearfix">
-                    <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                    <ul class="pagination">
-                        <li class="page-item disabled"><a href="#">Previous</a></li>
-                        <li class="page-item"><a href="#" class="page-link">1</a></li>
-                        <li class="page-item"><a href="#" class="page-link">2</a></li>
-                        <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                        <li class="page-item"><a href="#" class="page-link">4</a></li>
-                        <li class="page-item"><a href="#" class="page-link">5</a></li>
-                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                    </ul>
+                <div class="">
+                    <div style="float: left; width: 50%">
+                        <ul class="pagination">
+                            <li class="page-item disabled"><a href="#">Previous</a></li>
+                            <li class="page-item"><a href="#" class="page-link">1</a></li>
+                            <li class="page-item"><a href="#" class="page-link">2</a></li>
+                            <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                            <li class="page-item"><a href="#" class="page-link">4</a></li>
+                            <li class="page-item"><a href="#" class="page-link">5</a></li>
+                            <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                        </ul>
+                    </div>
+                    <div style="float: right; width: 50%">
+                        <select name="pages" id="pages" @change="paging($event)">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
                 </div>
+               
             </div>
         </div>
 
