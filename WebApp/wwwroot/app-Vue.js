@@ -8,6 +8,8 @@ const App = {
 				this.rKey++;
 				
 			})
+		this.rowsPerPage1 = $("#numOfPagesSelect").val();
+		//this.numberOfPages = this.totalRows / this.rowsPerPage1;
 	},
 	updated() {
 		var tbl = document.getElementById("myTable");
@@ -25,7 +27,7 @@ const App = {
 			sortColumn: 1,
 			sortDirection: 1,
 			filterString: '',
-			offset: 5,
+			offset: 1,
 			searctStr: '',
 			newCode1: '' ,
 			newDescription1: '' ,
@@ -33,17 +35,28 @@ const App = {
 			newSell_date1: '',
 			deleteItemOptional: 1,
 			totalRows: 1,
-			rowsPerPage1: 1
+			rowsPerPage1: 1,
+			numberOfPages:1
 		}
 	},
 	methods: {
-		paging() {
+		changeNumOfRows() {
+			//alert(event.target.value);
 			if (event.target.value == 0 || event.target.value == undefined) {
-				alert("value is wrong");
+			//	alert("value is wrong");
 				return;
 			}
-			this.rowsPerPage1 = total / event.target.value;
-			alert("rowsPerPage1 = " + rowsPerPage1);
+			this.rowsPerPage1 = event.target.value;
+			this.numberOfPages = this.totalRows / this.rowsPerPage1;
+
+			//alert("this.rowsPerPage1 = " + this.rowsPerPage1 + "this.numberOfPages = " + this.numberOfPages)
+
+			querystr = "https://localhost:7163/api/Products/Paging?offset=" + this.offset + "&rowsPerPage=" + this.rowsPerPage1;
+			axios.get(querystr).then(response => {
+			//	alert(response.data);
+				this.allProducts = response.data;
+				//this.refreshData();
+			});
 		},
 		addRow1() {
 			this.newCode1 = $('#newCode').val();
@@ -117,7 +130,7 @@ const App = {
 			querystr = "https://localhost:7163/api/Products/GetAllProducts";
 			axios.get(querystr)
 				.then(response => {
-					this.allProducts = response.data;
+					this.allProducts = response.data.products;
 					this.rKey++;
 				})
 		}

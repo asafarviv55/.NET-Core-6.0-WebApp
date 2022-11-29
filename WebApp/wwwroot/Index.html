@@ -86,16 +86,12 @@
                     <div style="float: left; width: 50%">
                         <ul class="pagination">
                             <li class="page-item disabled"><a href="#">Previous</a></li>
-                            <li class="page-item"><a href="#" class="page-link">1</a></li>
-                            <li class="page-item"><a href="#" class="page-link">2</a></li>
-                            <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                            <li class="page-item"><a href="#" class="page-link">4</a></li>
-                            <li class="page-item"><a href="#" class="page-link">5</a></li>
+                            <li v-for="(row,index) in numberOfPages" class="page-item"><a href="#" class="page-link">{{row}}</a></li>
                             <li class="page-item"><a href="#" class="page-link">Next</a></li>
                         </ul>
                     </div>
                     <div style="float: right; width: 50%">
-                        <select name="pages" id="pages" @change="paging($event)">
+                        <select name="pages" id="numOfPagesSelect" @change="changeNumOfRows()">
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="20">20</option>

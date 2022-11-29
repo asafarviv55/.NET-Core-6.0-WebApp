@@ -57,7 +57,7 @@ namespace WebApp.db
                     dt.Columns.Add(new DataColumn("description", typeof(string)));
                     dt.Columns.Add(new DataColumn("sell_date", typeof(DateTime)));
 
-                    for (int i = 1; i <= 50; i++)
+                    for (int i = 1; i <= 20; i++)
                     {
                         DataRow dr = dt.NewRow();
                         dr["code"] = i;
