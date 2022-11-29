@@ -5,6 +5,9 @@ const App = {
 			.then(response => {
 				this.allProducts = response.data.products;
 				this.totalRows = response.data.total;
+				this.rowsPerPage1 = $('#numOfPagesSelect').val();
+				this.numberOfPages = this.totalRows /   this.rowsPerPage1;
+				//this.offset = 0;
 				this.rKey++;
 				
 			})
@@ -34,14 +37,14 @@ const App = {
 			newName1: '' ,
 			newSell_date1: '',
 			deleteItemOptional: 1,
-			totalRows: 1,
-			rowsPerPage1: 1,
-			numberOfPages:1
+			totalRows: 20,
+			rowsPerPage1: 5,
+			numberOfPages:4
 		}
 	},
 	methods: {
 		changeNumOfRows() {
-			//alert(event.target.value);
+			//alert("changeNumOfRows - " + event.target.value);
 			if (event.target.value == 0 || event.target.value == undefined) {
 			//	alert("value is wrong");
 				return;
@@ -51,9 +54,25 @@ const App = {
 
 			//alert("this.rowsPerPage1 = " + this.rowsPerPage1 + "this.numberOfPages = " + this.numberOfPages)
 
-			querystr = "https://localhost:7163/api/Products/Paging?offset=" + this.offset + "&rowsPerPage=" + this.rowsPerPage1;
+			querystr = "https://localhost:7163/api/Products/Paging?offset=0&rowsPerPage=" + this.rowsPerPage1;
 			axios.get(querystr).then(response => {
 			//	alert(response.data);
+				this.allProducts = response.data;
+				//this.refreshData();
+			});
+		},
+		changePage(page) {
+			//alert(" changePage - " + page);
+			if (page == 1)
+				this.offset = 0;
+			else {
+				this.offset = ((page - 1) * this.rowsPerPage1) ;
+			}
+			
+			//alert(this.offset);
+			querystr = "https://localhost:7163/api/Products/Paging?offset=" + this.offset + "&rowsPerPage=" + this.rowsPerPage1;
+			axios.get(querystr).then(response => {
+				//	alert(response.data);
 				this.allProducts = response.data;
 				//this.refreshData();
 			});
