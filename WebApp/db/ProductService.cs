@@ -57,7 +57,7 @@ namespace WebApp.db
                     dt.Columns.Add(new DataColumn("description", typeof(string)));
                     dt.Columns.Add(new DataColumn("sell_date", typeof(DateTime)));
 
-                    for (int i = 1; i <= 10000; i++)
+                    for (int i = 1; i <= 50; i++)
                     {
                         DataRow dr = dt.NewRow();
                         dr["code"] = i;
@@ -143,8 +143,9 @@ namespace WebApp.db
         }
 
 
-        public static List<Product> GetAllProducts()
+        public static AProducts GetAllProducts()
         {
+            var aproducts = new AProducts();
             var products = new List<Product>();
             //to get the connection string 
             var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
@@ -171,15 +172,14 @@ namespace WebApp.db
                         };
                         products.Add(product);
                     }
+
+                    aproducts.products = products;
+
                     reader.NextResult();
 
                     while (reader.Read())
                     {
-                        contacts.Add(new Contact()
-                        {
-                            Id = (int)reader["Id"],
-                            Name = (string)reader["Name"]
-                        });
+                        aproducts.total = (int)reader["totalRows"];
                     }
                 }
 
@@ -188,7 +188,7 @@ namespace WebApp.db
                     conn.Close();
                 }
             }
-            return products;
+            return aproducts;
         }
 
 

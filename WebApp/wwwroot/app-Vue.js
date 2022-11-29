@@ -3,7 +3,8 @@ const App = {
 	mounted() {
 		axios.get("https://localhost:7163/api/Products/GetAllProducts")
 			.then(response => {
-				this.allProducts = response.data;
+				this.allProducts = response.data.products;
+				this.totalRows = response.data.total;
 				this.rKey++;
 				
 			})
@@ -31,12 +32,18 @@ const App = {
 			newName1: '' ,
 			newSell_date1: '',
 			deleteItemOptional: 1,
-			totalRows:100			
+			totalRows: 1,
+			rowsPerPage1: 1
 		}
 	},
 	methods: {
 		paging() {
-			alert(event.target.value);
+			if (event.target.value == 0 || event.target.value == undefined) {
+				alert("value is wrong");
+				return;
+			}
+			this.rowsPerPage1 = total / event.target.value;
+			alert("rowsPerPage1 = " + rowsPerPage1);
 		},
 		addRow1() {
 			this.newCode1 = $('#newCode').val();

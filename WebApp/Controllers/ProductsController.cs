@@ -21,21 +21,20 @@ namespace WebApp.Controllers
 
 
         [HttpGet]
-        public List<Product> GetAllProducts()
+        public AProducts GetAllProducts()
         {
-            List<Product> products = ProductService.GetAllProducts();
+            AProducts aProducts = ProductService.GetAllProducts();
 
-            return products;
+            return aProducts;
         }
 
 
         [HttpGet]
-        public List<Product> RefreshProducts()
+        public AProducts RefreshProducts()
         {
-            List<Product> products = ProductService.GetAllProducts();
+            AProducts aProducts = ProductService.GetAllProducts();
 
-
-            return products;
+            return aProducts;
         }
 
 
