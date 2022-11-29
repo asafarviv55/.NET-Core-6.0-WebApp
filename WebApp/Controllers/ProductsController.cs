@@ -39,6 +39,16 @@ namespace WebApp.Controllers
         }
 
 
+
+
+        [HttpGet]
+        public List<Product> Paging()
+        {
+            List<Product> products = ProductService.Paging();
+            return products;
+        }
+
+
         [HttpGet]
         public List<Product> GetAllProductsOrderBy(int orderCol, int orderDirection)
         {

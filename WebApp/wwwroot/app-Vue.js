@@ -1,7 +1,6 @@
 
 const App = {
 	mounted() {
-		//alert("mounted");
 		axios.get("https://localhost:7163/api/Products/GetAllProducts")
 			.then(response => {
 				this.allProducts = response.data;
@@ -21,8 +20,7 @@ const App = {
 			items:[],
 			allProducts: [],
 			rKey: 0,
-			message: "Hello Element Plus",
-			page: 1,
+ 			page: 1,
 			sortColumn: 1,
 			sortDirection: 1,
 			filterString: '',
@@ -36,6 +34,9 @@ const App = {
 		}
 	},
 	methods: {
+		paging() {
+
+		},
 		addRow1() {
 			this.newCode1 = $('#newCode').val();
 			this.newName1 = $('#newDescription').val();
@@ -49,23 +50,30 @@ const App = {
 		},
 		create() {
 			querystr = "https://localhost:7163/api/Products/InitialProducts";
-			axios.get(querystr);
-			this.refreshData();
+			axios.get(querystr).then(response => {
+				this.refreshData();
+			});
 		},
 		updateDeleteItem(id) {
-			//alert(id);
 			this.deleteItemOptional = id;
 		},
-		editRow(id) {
-		//	$('#editCode').val() = ;
-			//$('#editName').val() = ;
-		//$('#editDecription').val() = ;
-
-			querystr = "https://localhost:7163/api/Products/UpdateProduct?id=" + id + "&code=" + this.newCode1 + "&name=" + this.newName1 + "&description="
-				+ this.newDescription1;
-			axios.get(querystr);
-
-			},
+		sendItemsfromGridToModal(id, code, name, description, sell_date) {
+			$("#editID").val(id);
+			$("#editCode").val(code);
+			$("#editName").val(name) ;
+			$("#editDecription").val(description);
+		},
+		
+		submitModalInputs() {
+			querystr = "https://localhost:7163/api/Products/UpdateProduct?id="
+				+ $('#editID').val()
+				+ "&code=" + $('#editCode').val()
+				+ "&name=" + $('#editName').val()
+				+ "&description=" + $('#editDecription').val();
+			axios.get(querystr).then(response => {
+				this.refreshData();
+			});
+		},
 		deleteItem() {
 			querystr = "https://localhost:7163/api/Products/DeleteProduct?id=" + this.deleteItemOptional;
 			 axios.delete(querystr).then(response => {

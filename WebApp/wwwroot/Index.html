@@ -35,11 +35,9 @@
                     </div>
                 </div>
                 <div>
-                    <label for="searchBox">Refresh All Products </label>
-                    <input type="button" id="refresh" value="Refresh" v-on:click="refreshData()" /><br>
                     <label for="searchBox">Create All Products </label>
-                    <input type="button" id="create" value="InitialProducts" v-on:click="create()" /><br>
-                    <label for="searchBox">Please Type String to Search </label>
+                    <input type="button" id="create" value="Reset All Products" v-on:click="create()" /><br>
+                    <label for="searchBox">Search </label>
                     <input type="text" id="searchBox" value="" v-on:input="search" />
                 </div>
 
@@ -73,8 +71,8 @@
                             <td name="sell_date">{{row.sell_date}}</td>
                             <td></td>
                             <td>
-                                <a href="#editEmployeeModal" class="edit"  data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal"  class="delete"  data-toggle="modal"><i  value="Delete" v-on:click="updateDeleteItem(row.id)" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                <a href="#editProductModal" class="edit"  data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                <a href="#deleteProductModal"  class="delete"  data-toggle="modal"><i  value="Delete" v-on:click="updateDeleteItem(row.id)" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                             </td>
 
                         </tr>
@@ -133,40 +131,41 @@
 
 
         <!-- Edit Modal HTML -->
-        <div id="editEmployeeModal" class="modal fade">
+        <div id="editProductModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                          <div class="modal-header">
-                            <h4 class="modal-title">Edit Employee</h4>
+                             <h4 class="modal-title">Edit Product</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Product Code</label>
-                                <input type="text" id="editCode" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input type="text"  id="editName" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea class="form-control" id="editDecription" required></textarea>
-                            </div>
-                        </div>
+                         <div class="modal-body">
+                             <input type="hidden" id="editID"  value="" class="form-control" required>
+                             <div class="form-group">
+                                 <label>Product Code</label>
+                                 <input type="text" id="editCode" value="" class="form-control" required>
+                             </div>
+                             <div class="form-group">
+                                 <label>Name</label>
+                                 <input type="text" id="editName" value="" class="form-control" required>
+                             </div>
+                             <div class="form-group">
+                                 <label>Description</label>
+                                 <textarea class="form-control" value="" id="editDecription" required></textarea>
+                             </div>
+                         </div>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                            <input type="button" value="Save" v-on:click="editRow1()" data-dismiss="modal" id="editRow" />
+                            <input type="button" value="Save" v-on:click="submitModalInputs()" data-dismiss="modal" id="editRow" />
                         </div>
                  </div>
             </div>
         </div>
         <!-- Delete Modal HTML -->
-        <div id="deleteEmployeeModal" class="modal fade">
+        <div id="deleteProductModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Delete Employee</h4>
+                            <h4 class="modal-title">Delete Product</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">
