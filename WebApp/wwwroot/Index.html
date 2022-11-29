@@ -96,10 +96,9 @@
             </div>
             <div style="float: right; width: 50%">
                 <select name="pages" id="numOfPagesSelect" @change="changeNumOfRows()">
-                    <option value="5">5</option>
+                    <option selected value="5">5</option>
                     <option value="10">10</option>
-                    <option selected value="20">20</option>
-                    <option value="50">50</option>
+                    <option value="15">15</option>
                 </select>
             </div>
         </div>
@@ -116,15 +115,15 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Product Code</label>
-                            <input id="newCode" type="text" class="form-control" required>
+                            <input id="newCode" type="text" value="" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Name</label>
-                            <input id="newName" type="text" class="form-control" required>
+                            <input id="newName" type="text" value="" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <textarea id="newDescription" class="form-control" required></textarea>
+                            <textarea id="newDescription" value="" class="form-control" required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

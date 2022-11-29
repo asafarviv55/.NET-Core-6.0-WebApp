@@ -1,25 +1,38 @@
 
 const App = {
 	mounted() {
+
 		axios.get("https://localhost:7163/api/Products/GetAllProducts")
 			.then(response => {
 				this.allProducts = response.data.products;
 				this.totalRows = response.data.total;
-				this.rowsPerPage1 = $('#numOfPagesSelect').val();
-				this.numberOfPages = this.totalRows /   this.rowsPerPage1;
-				//this.offset = 0;
-				this.rKey++;
+ 				this.rowsPerPage1 = 5;
+				this.numberOfPages = Math.ceil(this.totalRows /   this.rowsPerPage1);
+ 				this.rKey++;
 				
 			})
-		this.rowsPerPage1 = $("#numOfPagesSelect").val();
-		//this.numberOfPages = this.totalRows / this.rowsPerPage1;
-	},
+  	},
 	updated() {
 		var tbl = document.getElementById("myTable");
 		for (let i in tbl.rows) {
 			let row = tbl.rows[i];
 			row.id = "row_" + i;
 		}
+
+	/*	var x = document.getElementById("numOfPagesSelect");
+		var option = document.createElement("option");
+		var rowsPerPageSel = this.totalRows;
+
+		for (var i = numOptions ; i > numOptions; i--) {
+			option = document.createElement("option");
+			option.text = rowsPerPageSel;
+			option.value = rowsPerPageSel;
+			option.name = "pages"
+			x.add(option);
+			rowsPerPageSel = rowsPerPageSel - 5;
+		}*/
+
+
 	},
 	data() {
 		return {
@@ -40,7 +53,7 @@ const App = {
 			totalRows: 20,
 			rowsPerPage1: 5,
 			numberOfPages:4
-		}
+		} 
 	},
 	methods: {
 		changeNumOfRows() {
@@ -48,7 +61,7 @@ const App = {
  				return;
 			}
 			this.rowsPerPage1 = event.target.value;
-			this.numberOfPages = this.totalRows / this.rowsPerPage1;
+			this.numberOfPages = Math.ceil(this.totalRows / this.rowsPerPage1);
 			querystr = "https://localhost:7163/api/Products/Paging?offset=0&rowsPerPage=" + this.rowsPerPage1;
 			axios.get(querystr).then(response => {
  				this.allProducts = response.data;

@@ -57,7 +57,7 @@ namespace WebApp.db
                     dt.Columns.Add(new DataColumn("description", typeof(string)));
                     dt.Columns.Add(new DataColumn("sell_date", typeof(DateTime)));
 
-                    for (int i = 1; i <= 20; i++)
+                    for (int i = 1; i <= 250; i++)
                     {
                         DataRow dr = dt.NewRow();
                         dr["code"] = i;
@@ -168,7 +168,7 @@ namespace WebApp.db
                             code = Convert.ToInt32(reader["code"]),
                             name = reader["name"].ToString(),
                             description = reader["description"].ToString(),
-                            sell_date = DateTime.Parse(reader["sell_date"].ToString())
+                            sell_date = reader["sell_date"].ToString()
                         };
                         products.Add(product);
                     }
@@ -218,7 +218,7 @@ namespace WebApp.db
                             code = Convert.ToInt32(reader["code"]),
                             name = reader["name"].ToString(),
                             description = reader["description"].ToString(),
-                            sell_date = DateTime.Parse(reader["sell_date"].ToString())
+                            sell_date = reader["sell_date"].ToString()
                         };
                         products.Add(product);
                     }
@@ -280,7 +280,7 @@ namespace WebApp.db
                         code = Convert.ToInt32(reader["code"]),
                         name = reader["name"].ToString(),
                         description = reader["description"].ToString(),
-                        sell_date = DateTime.Parse(reader["sell_date"].ToString())
+                        sell_date = reader["sell_date"].ToString()
                     };
                     products.Add(product);
                 }
@@ -311,7 +311,7 @@ namespace WebApp.db
                             code = Convert.ToInt32(reader["code"]),
                             name = reader["name"].ToString(),
                             description = reader["description"].ToString(),
-                            sell_date = DateTime.Parse(reader["sell_date"].ToString())
+                            sell_date = reader["sell_date"].ToString()
                         };
                         products.Add(product);
                     }
