@@ -9,9 +9,21 @@ const App = {
  				this.rowsPerPage1 = 5;
 				this.numberOfPages = Math.ceil(this.totalRows /   this.rowsPerPage1);
  				this.rKey++;
-				
+				var x = document.getElementById("numOfPagesSelect");
+				var option = document.createElement("option");
+
+				const ddNumOfRows = [this.totalRows, Math.ceil(this.totalRows / 5), Math.ceil(this.totalRows / 4), Math.ceil(this.totalRows / 3), Math.ceil(this.totalRows / 2)];
+				ddNumOfRows.sort();
+				for (var i = 0; i < ddNumOfRows.length; i++) {
+					option = document.createElement("option");
+					option.text = ddNumOfRows[i];
+					option.value = ddNumOfRows[i];
+					option.name = "pages"
+					x.add(option);
+				} 
 			})
-  	},
+		
+	},
 	updated() {
 		var tbl = document.getElementById("myTable");
 		for (let i in tbl.rows) {
@@ -19,18 +31,7 @@ const App = {
 			row.id = "row_" + i;
 		}
 
-	/*	var x = document.getElementById("numOfPagesSelect");
-		var option = document.createElement("option");
-		var rowsPerPageSel = this.totalRows;
-
-		for (var i = numOptions ; i > numOptions; i--) {
-			option = document.createElement("option");
-			option.text = rowsPerPageSel;
-			option.value = rowsPerPageSel;
-			option.name = "pages"
-			x.add(option);
-			rowsPerPageSel = rowsPerPageSel - 5;
-		}*/
+	 	
 
 
 	},
@@ -49,7 +50,8 @@ const App = {
 			newDescription1: '' ,
 			newName1: '' ,
 			newSell_date1: '',
-			deleteItemOptional: 1,
+			deleteItemOptional: -1,
+			deleteItemsOptional: "",
 			totalRows: 20,
 			rowsPerPage1: 5,
 			numberOfPages:4
@@ -95,8 +97,14 @@ const App = {
 				this.refreshData();
 			});
 		},
+		updateDeleteItems(idsAsString) {
+			if (this.deleteItemsOptional == '')
+				this.deleteItemsOptional = idsAsString;
+			else
+				this.deleteItemsOptional = this.deleteItemsOptional + "," + idsAsString;
+		},
 		updateDeleteItem(id) {
-			this.deleteItemOptional = id;
+ 			this.deleteItemOptional = id;
 		},
 		sendItemsfromGridToModal(id, code, name, description, sell_date) {
 			$("#editID").val(id);
@@ -116,7 +124,11 @@ const App = {
 			});
 		},
 		deleteItem() {
-			querystr = "https://localhost:7163/api/Products/DeleteProduct?id=" + this.deleteItemOptional;
+			if (this.deleteItemsOptional != "")
+				querystr = "https://localhost:7163/api/Products/DeleteProduct?id=" + this.deleteItemsOptional;
+			else 
+				querystr = "https://localhost:7163/api/Products/DeleteProduct?id=" + this.deleteItemOptional;
+
 			 axios.delete(querystr).then(response => {
 				this.refreshData();
 			})

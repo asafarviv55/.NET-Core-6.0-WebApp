@@ -53,6 +53,9 @@
                             <th style="width:300px" v-on:click="sort(3)">Description</th>
 
                             <th style="width:300px" v-on:click="sort(4)">Sell Date</th>
+                           
+                            <th style="width:300px">Image</th>
+
 
                         </tr>
                     </thead>
@@ -60,7 +63,7 @@
                         <tr v-for="(row,index) in allProducts">
                             <td>
                                 <span class="custom-checkbox">
-                                    <input type="checkbox" id="checkbox1" name="options[]" value="1">
+                                    <input type="checkbox" id="checkbox1" v-on:click="updateDeleteItems(row.id)" name="options[]" value="1">
                                     <label for="checkbox1"></label>
                                 </span>
                             </td>
@@ -69,6 +72,7 @@
                             <td name="name">{{row.name}}</td>
                             <td name="description">{{row.description}}</td>
                             <td name="sell_date">{{row.sell_date}}</td>
+                            <td name="productImage">{{row.img}}</td>
                             <td></td>
                             <td>
                                 <a href="#editProductModal" class="edit" data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -97,8 +101,6 @@
             <div style="float: right; width: 50%">
                 <select name="pages" id="numOfPagesSelect" @change="changeNumOfRows()">
                     <option selected value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
                 </select>
             </div>
         </div>

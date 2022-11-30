@@ -234,6 +234,8 @@ namespace WebApp.db
 
         public static void DeleteProduct(int id)
         {
+            if (id == -1)
+                return;
             var products = new List<Product>();
             //to get the connection string 
             var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
