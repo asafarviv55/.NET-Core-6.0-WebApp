@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using WebApp.db;
 using WebApp.Models;
+using WebApp.Services;
 
 namespace WebApp.Controllers
 {
@@ -10,6 +10,9 @@ namespace WebApp.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
+
+
+
 
         [HttpGet]
         public void InitialProducts()
@@ -40,10 +43,9 @@ namespace WebApp.Controllers
 
 
         [HttpPost]
-        public void FileUpload(IFormCollection uploadImage)
+        public void FileUpload(IFormCollection formData)
         {
-            ProductService.FileUpload(uploadImage);
-
+            ProductService.FileUpload(formData);
         }
 
 

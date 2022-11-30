@@ -76,7 +76,7 @@
                                 <div >
                                     <div class="col-xs-6">
                                         <label></label>
-                                        <input type="file" accept="image/*" @change="handleFileUpload($event);showMyImage();" />
+                                        <input type="file" accept="image/*" @change="handleFileUpload(row.id);showMyImage($event);" />
                                         <br />
                                         <img id="thumbnil" style="width:80%; margin-top:10px;" src="" alt="image" />
                                         <button v-on:click="submitFile()">Submit</button>

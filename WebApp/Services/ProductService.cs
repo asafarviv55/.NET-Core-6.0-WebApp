@@ -2,11 +2,78 @@
 using System.Data.SqlClient;
 using WebApp.Models;
 
-namespace WebApp.db
+namespace WebApp.Services
 {
     public class ProductService
     {
 
+
+        private static void SaveFileOnServer(IFormCollection uploadedfile)
+        {
+            var files = uploadedfile.Files;
+
+            foreach (var file in files)
+            {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images");
+
+                if (file.Length > 0)
+                {
+                    FileInfo fileInfo = new FileInfo(file.FileName);
+
+                    string fileName = file.FileName;
+
+                    using (var fileStream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                    {
+                        long size = file.Length;
+                        if (size > 200000
+                              && Array.IndexOf(new string[] { ".jpg", ".png" }, Path.GetExtension(file.FileName).ToString().ToLower()) < 0)
+                        {
+                            return;
+                        }
+                        file.CopyToAsync(fileStream);
+                    }
+                }
+            }
+        }
+
+        public static void FileUpload(IFormCollection formData)
+        {
+            SaveFileOnServer(formData);
+            //  SaveFilePathInDB(formData);
+        }
+
+        private static void SaveFilePathInDB(IFormCollection formData)
+        {
+            //to get the connection string 
+            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+
+            var files = formData.Files.ToList();
+
+
+
+            using (SqlConnection conn = new SqlConnection(connectionstring))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string commandtext = "SavePathOfFile ";// + path + ", " + formData["id"].ToString();
+
+
+                    SqlCommand cmd = new SqlCommand(commandtext, conn);
+
+
+                    cmd.ExecuteNonQuery();
+
+                }
+                finally
+                {
+                    conn.Close();
+
+                }
+
+            }
+        }
 
         public static void RecreateDB()
         {
@@ -93,55 +160,10 @@ namespace WebApp.db
         }
 
 
-        byte[] ReadFile(string sPath)
-        {
-            byte[]? data = null;
-            FileInfo fInfo = new FileInfo(sPath);
-            long numBytes = fInfo.Length;
-            FileStream fStream = new FileStream(sPath, FileMode.Open, FileAccess.Read);
-            BinaryReader br = new BinaryReader(fStream);
-            data = br.ReadBytes((int)numBytes);
-            return data;
-        }
 
 
 
-
-        public static void FileUpload(IFormCollection uploadImage)
-        {
-            String a = "";
-            try
-            {
-                //Read Image Bytes into a byte array
-                byte[] imageData = ReadFile(txtImagePath.Text);
-
-                //Initialize SQL Server Connection
-                SqlConnection CN = new SqlConnection(txtConnectionString.Text);
-
-                //Set insert query
-                string qry = "insert into ImagesStore (OriginalPath, ImageData) values(@OriginalPath, @ImageData)";
-
-                //Initialize SqlCommand object for insert.
-                SqlCommand SqlCom = new SqlCommand(qry, CN);
-
-                //We are passing Original Image Path and 
-                //Image byte data as SQL parameters.
-                SqlCom.Parameters.Add(new SqlParameter("@OriginalPath",
-                  (object)txtImagePath.Text));
-                SqlCom.Parameters.Add(new SqlParameter("@ImageData", (object)imageData));
-
-                //Open connection and execute insert query.
-                CN.Open();
-                SqlCom.ExecuteNonQuery();
-                CN.Close();
-
-                //Close form and return to list or images.
-                this.Close();
-            }
-
-        }
-
-        public static void AddProduct(int code, String name, String description)
+        public static void AddProduct(int code, string name, string description)
         {
             var products = new List<Product>();
             //to get the connection string 
@@ -166,7 +188,7 @@ namespace WebApp.db
 
         }
 
-        public static void updateProduct(int id, int code, String name, String description)
+        public static void updateProduct(int id, int code, string name, string description)
         {
             var products = new List<Product>();
             //to get the connection string 
@@ -338,7 +360,7 @@ namespace WebApp.db
             return products;
         }
 
-        public static List<Product> searchProduct(String searchStr)
+        public static List<Product> searchProduct(string searchStr)
         {
             var products = new List<Product>();
             //to get the connection string 
@@ -370,12 +392,12 @@ namespace WebApp.db
             return products;
         }
 
-        private static String getOrderDirectionByNumber(int col)
+        private static string getOrderDirectionByNumber(int col)
         {
             return col == 0 ? "asc" : "desc";
         }
 
-        private static String getColumnNameByNumber(int col)
+        private static string getColumnNameByNumber(int col)
         {
             switch (col)
             {

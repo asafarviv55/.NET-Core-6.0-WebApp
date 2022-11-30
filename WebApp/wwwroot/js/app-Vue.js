@@ -59,29 +59,33 @@ const App = {
 			totalRows: 20,
 			rowsPerPage1: 5,
 			numberOfPages: 4,
-			file: ''
+			file: '',
+			fileUploadProductId:1
 		} 
 	},
 	methods: {
-			handleFileUpload() {
-				this.file = event.target.files[0];
+		handleFileUpload(id) {
+ 			this.file = event.target.files[0];
+			alert(id);
 			},
-				showMyImage() {
-					var file = this.file;
-					var img = document.getElementById("thumbnil");
-					img.file = file;
-					var reader = new FileReader();
-					reader.onload = (function (aImg) {
-						return function (e) {
-							aImg.src = e.target.result;
-						};
-					})(img);
-					reader.readAsDataURL(file);
+			showMyImage() {
+				var file = this.file;
+				//alert(event.target.value);
+				var img = document.getElementById("thumbnil");
+				img.file = file;
+				var reader = new FileReader();
+				reader.onload = (function (aImg) {
+					return function (e) {
+						aImg.src = e.target.result;
+					};
+				})(img);
+				reader.readAsDataURL(file);
 			},
 			submitFile() {
 				let formData = new FormData();
 				formData.append('file', this.file);
-				axios.post('/api/Products/FileUpload',
+				formData.append('id', this.fileUploadProductId);
+ 				axios.post('https://localhost:7163/api/Products/FileUpload',
 					formData,
 					{
 						headers: {
