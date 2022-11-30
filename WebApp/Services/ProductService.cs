@@ -16,6 +16,9 @@ namespace WebApp.Services
             {
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images");
 
+
+
+
                 if (file.Length > 0)
                 {
                     FileInfo fileInfo = new FileInfo(file.FileName);
@@ -39,7 +42,7 @@ namespace WebApp.Services
         public static void FileUpload(IFormCollection formData)
         {
             SaveFileOnServer(formData);
-            //  SaveFilePathInDB(formData);
+            SaveFilePathInDB(formData);
         }
 
         private static void SaveFilePathInDB(IFormCollection formData)
@@ -47,31 +50,35 @@ namespace WebApp.Services
             //to get the connection string 
             var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
 
-            var files = formData.Files.ToList();
+            var files = formData.Files;
 
-
-
-            using (SqlConnection conn = new SqlConnection(connectionstring))
+            foreach (var file in files)
             {
-                try
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images");
+
+                using (SqlConnection conn = new SqlConnection(connectionstring))
                 {
-                    conn.Open();
+                    try
+                    {
+                        conn.Open();
 
-                    string commandtext = "SavePathOfFile ";// + path + ", " + formData["id"].ToString();
+                        string commandtext = "SavePathOfFile '" + path + "' , " + formData["id"].ToString();
+
+                        Console.WriteLine(commandtext);
+
+                        SqlCommand cmd = new SqlCommand(commandtext, conn);
 
 
-                    SqlCommand cmd = new SqlCommand(commandtext, conn);
+                        cmd.ExecuteNonQuery();
 
+                    }
+                    finally
+                    {
+                        conn.Close();
 
-                    cmd.ExecuteNonQuery();
+                    }
 
                 }
-                finally
-                {
-                    conn.Close();
-
-                }
-
             }
         }
 
