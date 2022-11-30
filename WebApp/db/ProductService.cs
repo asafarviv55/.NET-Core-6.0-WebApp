@@ -92,9 +92,52 @@ namespace WebApp.db
             return products;
         }
 
+
+        byte[] ReadFile(string sPath)
+        {
+            byte[]? data = null;
+            FileInfo fInfo = new FileInfo(sPath);
+            long numBytes = fInfo.Length;
+            FileStream fStream = new FileStream(sPath, FileMode.Open, FileAccess.Read);
+            BinaryReader br = new BinaryReader(fStream);
+            data = br.ReadBytes((int)numBytes);
+            return data;
+        }
+
+
+
+
         public static void FileUpload(IFormCollection uploadImage)
         {
             String a = "";
+            try
+            {
+                //Read Image Bytes into a byte array
+                byte[] imageData = ReadFile(txtImagePath.Text);
+
+                //Initialize SQL Server Connection
+                SqlConnection CN = new SqlConnection(txtConnectionString.Text);
+
+                //Set insert query
+                string qry = "insert into ImagesStore (OriginalPath, ImageData) values(@OriginalPath, @ImageData)";
+
+                //Initialize SqlCommand object for insert.
+                SqlCommand SqlCom = new SqlCommand(qry, CN);
+
+                //We are passing Original Image Path and 
+                //Image byte data as SQL parameters.
+                SqlCom.Parameters.Add(new SqlParameter("@OriginalPath",
+                  (object)txtImagePath.Text));
+                SqlCom.Parameters.Add(new SqlParameter("@ImageData", (object)imageData));
+
+                //Open connection and execute insert query.
+                CN.Open();
+                SqlCom.ExecuteNonQuery();
+                CN.Close();
+
+                //Close form and return to list or images.
+                this.Close();
+            }
 
         }
 
