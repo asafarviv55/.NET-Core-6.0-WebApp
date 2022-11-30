@@ -15,8 +15,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
     <script src="https://unpkg.com/vue@3"></script>
 
-    <script src="styles.css"></script>
-    <script src="app-jQuery.js"></script>
+    <script src="css/styles.css"></script>
+    <script src="js/app-jQuery.js"></script>
 
 </head>
 <body>
@@ -72,13 +72,22 @@
                             <td name="name">{{row.name}}</td>
                             <td name="description">{{row.description}}</td>
                             <td name="sell_date">{{row.sell_date}}</td>
-                            <td name="productImage">{{row.img}}</td>
+                            <td name="productImage">
+                                <div >
+                                    <div class="col-xs-6">
+                                        <label></label>
+                                        <input type="file" accept="image/*" @change="handleFileUpload($event);showMyImage();" />
+                                        <br />
+                                        <img id="thumbnil" style="width:80%; margin-top:10px;" src="" alt="image" />
+                                        <button v-on:click="submitFile()">Submit</button>
+                                    </div>
+                                </div>
+                            </td>
                             <td></td>
                             <td>
-                                <a href="#editProductModal" class="edit" data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteProductModal" class="delete" data-toggle="modal"><i value="Delete" v-on:click="updateDeleteItem(row.id)" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                            </td>
-
+                                     <a href="#editProductModal" class="edit" data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                    <a href="#deleteProductModal" class="delete" data-toggle="modal"><i value="Delete" v-on:click="updateDeleteItem(row.id)" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                               </td>
                         </tr>
                     </tbody>
                     <tfoot>
@@ -100,7 +109,6 @@
             </div>
             <div style="float: right; width: 50%">
                 <select name="pages" id="numOfPagesSelect" @change="changeNumOfRows()">
-                    <option selected value="5">5</option>
                 </select>
             </div>
         </div>
@@ -187,7 +195,7 @@
             </div>
         </div>
     </div>
-    <script src="app-Vue.js"></script>
+    <script src="js/app-Vue.js"></script>
 
 </body>
 </html>

@@ -11,7 +11,6 @@ namespace WebApp.Controllers
     public class ProductsController : ControllerBase
     {
 
-
         [HttpGet]
         public void InitialProducts()
         {
@@ -37,6 +36,15 @@ namespace WebApp.Controllers
             return aProducts;
         }
 
+
+
+
+        [HttpPost]
+        public void FileUpload(IFormCollection uploadImage)
+        {
+            ProductService.FileUpload(uploadImage);
+
+        }
 
 
 

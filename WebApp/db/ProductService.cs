@@ -92,7 +92,11 @@ namespace WebApp.db
             return products;
         }
 
+        public static void FileUpload(IFormCollection uploadImage)
+        {
+            String a = "";
 
+        }
 
         public static void AddProduct(int code, String name, String description)
         {
