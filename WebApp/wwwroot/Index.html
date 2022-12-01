@@ -73,26 +73,22 @@
                             <td name="description">{{row.description}}</td>
                             <td name="sell_date">{{row.sell_date}}</td>
                             <td name="productImage">
-                                <div >
-                                    <div class="col-xs-6">
-                                        <label></label>
-                                        <input type="file" accept="image/*" @change="handleFileUpload(row.id);showMyImage($event);" />
-                                        <br />
-                                        <img id="thumbnil" style="width:80%; margin-top:10px;" src="" alt="image" />
-                                        <button v-on:click="submitFile()">Submit</button>
-                                    </div>
+                                <div class="col-xs-6">
+                                    <label></label>
+                                    <input type="file" accept="image/*" @change="handleFileUpload(row.id);showMyImage(row.id)" />
+                                    <img   src="" style="height: 40px; width: 40px;" name="thumbnil"  alt="image" />
+                                    <br />
+                                    <button v-on:click="submitFile()">Submit</button>
                                 </div>
-                            </td>
+                             </td>
                             <td></td>
                             <td>
-                                     <a href="#editProductModal" class="edit" data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                    <a href="#deleteProductModal" class="delete" data-toggle="modal"><i value="Delete" v-on:click="updateDeleteItem(row.id)" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                               </td>
+                               <a href="#editProductModal" class="edit" data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                               <a href="#deleteProductModal" class="delete" data-toggle="modal"><i value="Delete" v-on:click="updateDeleteItem(row.id)" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            </td>
                         </tr>
                     </tbody>
-                    <tfoot>
-
-                    </tfoot>
+         
 
                 </table>
 

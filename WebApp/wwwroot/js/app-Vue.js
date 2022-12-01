@@ -7,8 +7,8 @@ const App = {
 				this.allProducts = response.data.products;
 				this.totalRows = response.data.total;
 				this.rowsPerPage1 = this.totalRows;
-				this.numberOfPages = Math.ceil(this.totalRows /   this.rowsPerPage1);
- 				this.rKey++;
+				this.numberOfPages = Math.ceil(this.totalRows / this.rowsPerPage1);
+				this.rKey++;
 				var x = document.getElementById("numOfPagesSelect");
 				var option = document.createElement("option");
 				option.text = this.totalRows;
@@ -16,7 +16,7 @@ const App = {
 				option.name = "pages"
 				x.add(option);
 
-				const ddNumOfRows = [ Math.ceil(this.totalRows / 5), Math.ceil(this.totalRows / 4), Math.ceil(this.totalRows / 3), Math.ceil(this.totalRows / 2)];
+				const ddNumOfRows = [Math.ceil(this.totalRows / 5), Math.ceil(this.totalRows / 4), Math.ceil(this.totalRows / 3), Math.ceil(this.totalRows / 2)];
 				ddNumOfRows.sort();
 				for (var i = 0; i < ddNumOfRows.length; i++) {
 					option = document.createElement("option");
@@ -24,35 +24,31 @@ const App = {
 					option.value = ddNumOfRows[i];
 					option.name = "pages"
 					x.add(option);
-				} 
+				}
 			})
-		
+
 	},
 	updated() {
-		var tbl = document.getElementById("myTable");
-		for (let i in tbl.rows) {
-			let row = tbl.rows[i];
-			row.id = "row_" + i;
-		}
-
-	 	
-
-
+		$("#myTable tr").each(function (index) {// index is the position of the current tr in the table ,ele is the tr
+			$("td[name='productImage']", this).each(function () {
+				$(this).find("img").attr('id', "thumbnil_" + index);
+			});
+		});
 	},
 	data() {
 		return {
-			items:[],
+			items: [],
 			allProducts: [],
 			rKey: 0,
- 			page: 1,
+			page: 1,
 			sortColumn: 1,
 			sortDirection: 1,
 			filterString: '',
 			offset: 1,
 			searctStr: '',
-			newCode1: '' ,
-			newDescription1: '' ,
-			newName1: '' ,
+			newCode1: '',
+			newDescription1: '',
+			newName1: '',
 			newSell_date1: '',
 			deleteItemOptional: -1,
 			deleteItemsOptional: "",
@@ -60,26 +56,21 @@ const App = {
 			rowsPerPage1: 5,
 			numberOfPages: 4,
 			file: '',
-			fileUploadProductId:1
-		} 
+			fileUploadProductId: 1,
+			previewUrl: '',
+			thumbId: ''
+		}
 	},
 	methods: {
-		handleFileUpload(id) {
- 			this.file = event.target.files[0];
-			alert(id);
+			handleFileUpload(id) {
+			this.file = event.target.files[0];
+			this.thumbId = id;
+
 			},
-			showMyImage() {
-				var file = this.file;
-				//alert(event.target.value);
-				var img = document.getElementById("thumbnil");
-				img.file = file;
-				var reader = new FileReader();
-				reader.onload = (function (aImg) {
-					return function (e) {
-						aImg.src = e.target.result;
-					};
-				})(img);
-				reader.readAsDataURL(file);
+			showMyImage(id) { 
+				const file = event.target.files[0];
+				const url = URL.createObjectURL(file);
+				$("#thumbnil_" + id).attr('src',  url);
 			},
 			submitFile() {
 				let formData = new FormData();
