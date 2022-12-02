@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using Microsoft.Extensions.Primitives;
+using System.Data;
 using System.Data.SqlClient;
 using WebApp.Models;
 
@@ -54,7 +55,13 @@ namespace WebApp.Services
 
             foreach (var file in files)
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images");
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/");
+
+                FileInfo fileInfo = new FileInfo(file.FileName);
+
+                string fileName = file.FileName;
+
+
 
                 using (SqlConnection conn = new SqlConnection(connectionstring))
                 {
@@ -62,7 +69,7 @@ namespace WebApp.Services
                     {
                         conn.Open();
 
-                        string commandtext = "SavePathOfFile '" + path + "' , " + formData["id"].ToString();
+                        string commandtext = "SavePathOfFile '" + path + fileName + "' , " + formData["id"].ToString();
 
                         Console.WriteLine(commandtext);
 
@@ -143,6 +150,7 @@ namespace WebApp.Services
                     }
                     //create object of SqlBulkCopy which help to insert  
                     SqlBulkCopy objbulk = new SqlBulkCopy(conn);
+
 
                     //assign Destination table name  
                     objbulk.DestinationTableName = "products";
@@ -310,8 +318,7 @@ namespace WebApp.Services
 
         public static void DeleteProduct(int id)
         {
-            if (id == -1)
-                return;
+
             var products = new List<Product>();
             //to get the connection string 
             var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
@@ -325,6 +332,51 @@ namespace WebApp.Services
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
 
                     cmd.ExecuteNonQuery();
+
+                }
+                finally
+                {
+                    conn.Close();
+                }
+
+            }
+
+        }
+
+
+
+
+        public static void DeleteProducts(StringValues ids)
+        {
+            var products = new List<Product>();
+            //to get the connection string 
+            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
+            {
+                try
+                {
+                    conn.Open();
+
+                    var dt = new DataTable();
+
+                    dt.Columns.Add("Id", typeof(Int32));
+
+                    foreach (var id in ids)
+                        dt.Rows.Add(Int32.Parse(id));
+
+
+
+                    var delete = new SqlCommand("DeleteMultipleProducts ", conn)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+
+                    delete.Parameters.AddWithValue("@IDs", dt).SqlDbType = SqlDbType.Structured;
+
+                    delete.ExecuteNonQuery();
+
+
+
 
                 }
                 finally
@@ -418,6 +470,7 @@ namespace WebApp.Services
                     return "sell_date";
             }
         }
+
 
     }
 }

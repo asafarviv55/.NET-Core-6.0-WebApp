@@ -58,146 +58,161 @@ const App = {
 			file: '',
 			fileUploadProductId: 1,
 			previewUrl: '',
-			thumbId: ''
+			thumbId: '', 
+			formData : new FormData()
 		}
 	},
 	methods: {
-			handleFileUpload(id) {
-			this.file = event.target.files[0];
-			this.thumbId = id;
+				handleFileUpload(id) {
+					this.file = event.target.files[0];
+					this.thumbId = id;
+				},
+				showMyImage(id) { 
+					const file = event.target.files[0];
+					const url = URL.createObjectURL(file);
+					$("#thumbnil_" + id).attr('src',  url);
+				},
+				submitFile() {
+					formData1 = new FormData();
+					formData1.append('file', this.file);
+					formData1.append('id', this.fileUploadProductId);
+ 					axios.post('https://localhost:7163/api/Products/FileUpload',
+						formData1,
+						{
+							headers: {
+								'Content-Type': 'multipart/form-data'
+							}
+						}
+					).then(function () {
+						console.log('upload file SUCCESS!!');
+					})
+						.catch(function () {
+							console.log('upload file FAILURE!!');
+						});
+				},
+				changeNumOfRows() {
+ 					if (event.target.value == 0 || event.target.value == undefined) {
+ 						return;
+					}
+					this.rowsPerPage1 = event.target.value;
+					this.numberOfPages = Math.ceil(this.totalRows / this.rowsPerPage1);
+					querystr = "https://localhost:7163/api/Products/Paging?offset=0&rowsPerPage=" + this.rowsPerPage1;
+					axios.get(querystr).then(response => {
+ 						this.allProducts = response.data;
+ 					});
+				},
+				changePage(page) {
+ 					if (page == 1)
+						this.offset = 0;
+					else {
+						this.offset = ((page - 1) * this.rowsPerPage1) ;
+					}
+ 					querystr = "https://localhost:7163/api/Products/Paging?offset=" + this.offset + "&rowsPerPage=" + this.rowsPerPage1;
+					axios.get(querystr).then(response => {
+ 						this.allProducts = response.data;
+ 					});
+				},
+				addRow1() {
+					this.newCode1 = $('#newCode').val();
+					this.newName1 = $('#newDescription').val();
+					this.newDescription1 = $('#newName').val();
 
-			},
-			showMyImage(id) { 
-				const file = event.target.files[0];
-				const url = URL.createObjectURL(file);
-				$("#thumbnil_" + id).attr('src',  url);
-			},
-			submitFile() {
-				let formData = new FormData();
-				formData.append('file', this.file);
-				formData.append('id', this.fileUploadProductId);
- 				axios.post('https://localhost:7163/api/Products/FileUpload',
-					formData,
+					querystr = "https://localhost:7163/api/Products/AddNewProduct?code="+this.newCode1+"&name="+this.newName1+"&description="
+								+this.newDescription1 ;
+					axios.get(querystr).then(response => {
+						this.refreshData();
+					});
+				},
+				create() {
+					querystr = "https://localhost:7163/api/Products/InitialProducts";
+					axios.get(querystr).then(response => {
+						this.refreshData();
+					});
+				},
+			
+				sendItemsfromGridToModal(id, code, name, description) {
+					$("#editID").val(id);
+					$("#editCode").val(code);
+					$("#editName").val(name) ;
+					$("#editDecription").val(description);
+				},
+		
+				submitModalInputs() {
+					querystr = "https://localhost:7163/api/Products/UpdateProduct?id="
+						+ $('#editID').val()
+						+ "&code=" + $('#editCode').val()
+						+ "&name=" + $('#editName').val()
+						+ "&description=" + $('#editDecription').val();
+					axios.get(querystr).then(response => {
+						this.refreshData();
+					});
+				},
+		
+				updateDeleteItem(id) {
+					this.deleteItemOptional = id;
+				},
+				deleteItem() {
+					if (this.deleteItemsOptional != "")
+						querystr = "https://localhost:7163/api/Products/DeleteProduct?id=" + this.deleteItemsOptional;
+					else 
+						querystr = "https://localhost:7163/api/Products/DeleteProduct?id=" + this.deleteItemOptional;
+
+						axios.delete(querystr).then(response => {
+						this.refreshData();
+					})
+			
+				},
+				updateDeleteItems(idsAsString) {
+					this.formData.append('id', idsAsString);
+				},
+		        deleteItems() {
+					axios.post('https://localhost:7163/api/Products/DeleteProducts',
+					this.formData,
 					{
 						headers: {
 							'Content-Type': 'multipart/form-data'
 						}
 					}
-				).then(function () {
-					console.log('upload file SUCCESS!!');
-				})
+					).then(function () {
+						console.log('DeleteProduct files SUCCESS!!');
+						this.refreshData();
+					})
 					.catch(function () {
-						console.log('upload file FAILURE!!');
+						console.log('DeleteProduct files FAILURE!!');
 					});
-			},
-			changeNumOfRows() {
- 				if (event.target.value == 0 || event.target.value == undefined) {
- 					return;
-				}
-				this.rowsPerPage1 = event.target.value;
-				this.numberOfPages = Math.ceil(this.totalRows / this.rowsPerPage1);
-				querystr = "https://localhost:7163/api/Products/Paging?offset=0&rowsPerPage=" + this.rowsPerPage1;
-				axios.get(querystr).then(response => {
- 					this.allProducts = response.data;
- 				});
-			},
-			changePage(page) {
- 				if (page == 1)
-					this.offset = 0;
-				else {
-					this.offset = ((page - 1) * this.rowsPerPage1) ;
-				}
- 				querystr = "https://localhost:7163/api/Products/Paging?offset=" + this.offset + "&rowsPerPage=" + this.rowsPerPage1;
-				axios.get(querystr).then(response => {
- 					this.allProducts = response.data;
- 				});
-			},
-			addRow1() {
-				this.newCode1 = $('#newCode').val();
-				this.newName1 = $('#newDescription').val();
-				this.newDescription1 = $('#newName').val();
+				},
+				sort(col) {
+					if (this.sortDirection == 1)
+						this.sortDirection = 0;
+					else
+						this.sortDirection = 1;
+					var querystr = "https://localhost:7163/api/Products/GetAllProductsOrderBy?orderCol=" + col + "&orderDirection=" + this.sortDirection;
 
-				querystr = "https://localhost:7163/api/Products/AddNewProduct?code="+this.newCode1+"&name="+this.newName1+"&description="
-							+this.newDescription1 ;
-				axios.get(querystr).then(response => {
-					this.refreshData();
-				});
-			},
-			create() {
-				querystr = "https://localhost:7163/api/Products/InitialProducts";
-				axios.get(querystr).then(response => {
-					this.refreshData();
-				});
-			},
-			updateDeleteItems(idsAsString) {
-				if (this.deleteItemsOptional == '')
-					this.deleteItemsOptional = idsAsString;
-				else
-					this.deleteItemsOptional = this.deleteItemsOptional + "," + idsAsString;
-			},
-			updateDeleteItem(id) {
- 				this.deleteItemOptional = id;
-			},
-			sendItemsfromGridToModal(id, code, name, description, sell_date) {
-				$("#editID").val(id);
-				$("#editCode").val(code);
-				$("#editName").val(name) ;
-				$("#editDecription").val(description);
-			},
-		
-			submitModalInputs() {
-				querystr = "https://localhost:7163/api/Products/UpdateProduct?id="
-					+ $('#editID').val()
-					+ "&code=" + $('#editCode').val()
-					+ "&name=" + $('#editName').val()
-					+ "&description=" + $('#editDecription').val();
-				axios.get(querystr).then(response => {
-					this.refreshData();
-				});
-			},
-			deleteItem() {
-				if (this.deleteItemsOptional != "")
-					querystr = "https://localhost:7163/api/Products/DeleteProduct?id=" + this.deleteItemsOptional;
-				else 
-					querystr = "https://localhost:7163/api/Products/DeleteProduct?id=" + this.deleteItemOptional;
-
-				 axios.delete(querystr).then(response => {
-					this.refreshData();
-				})
-			
-			},
-			sort(col) {
-				if (this.sortDirection == 1)
-					this.sortDirection = 0;
-				else
-					this.sortDirection = 1;
-				var querystr = "https://localhost:7163/api/Products/GetAllProductsOrderBy?orderCol=" + col + "&orderDirection=" + this.sortDirection;
-
-				axios.get(querystr)
-					.then(response => {
-						this.allProducts = response.data;
-						this.rKey++;
- 					})
-			},
-			search(event) {
-				this.searctStr = event.target.value;
-				if (this.searctStr == '' || this.searctStr == undefined)
-					this.refreshData();
-				else
-					axios.get("https://localhost:7163/api/Products/SearchProducts?str=" + this.searctStr)
+					axios.get(querystr)
 						.then(response => {
 							this.allProducts = response.data;
 							this.rKey++;
+ 						})
+				},
+				search(event) {
+					this.searctStr = event.target.value;
+					if (this.searctStr == '' || this.searctStr == undefined)
+						this.refreshData();
+					else
+						axios.get("https://localhost:7163/api/Products/SearchProducts?str=" + this.searctStr)
+							.then(response => {
+								this.allProducts = response.data;
+								this.rKey++;
+							})
+				},
+				refreshData() {
+					querystr = "https://localhost:7163/api/Products/GetAllProducts";
+					axios.get(querystr)
+						.then(response => {
+							this.allProducts = response.data.products;
+							this.rKey++;
 						})
-			},
-			refreshData() {
-				querystr = "https://localhost:7163/api/Products/GetAllProducts";
-				axios.get(querystr)
-					.then(response => {
-						this.allProducts = response.data.products;
-						this.rKey++;
-					})
-			}
+				}
 	}
 };
 

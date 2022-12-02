@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using WebApp.Models;
 using WebApp.Services;
 
@@ -97,6 +98,14 @@ namespace WebApp.Controllers
             ProductService.DeleteProduct(id);
         }
 
+
+
+        [HttpPost]
+        public void DeleteProducts(IFormCollection form)
+        {
+            form.TryGetValue("id", out StringValues ids);
+            ProductService.DeleteProducts(ids);
+        }
 
 
 
