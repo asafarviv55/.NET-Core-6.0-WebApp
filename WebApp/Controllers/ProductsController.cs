@@ -71,16 +71,16 @@ namespace WebApp.Controllers
 
 
         [HttpGet]
-        public void AddNewProduct(int code, String name, String description)
+        public void AddNewProduct(int code, String name, String description, String imagePath)
         {
-            ProductService.AddProduct(code, name, description);
+            ProductService.AddNewProduct(code, name, description, imagePath);
         }
 
 
         [HttpGet]
         public void UpdateProduct(int id, int code, String name, String description, String imagePath)
         {
-            ProductService.updateProduct(id, code, name, description, imagePath);
+            ProductService.UpdateProduct(id, code, name, description, imagePath);
         }
 
 

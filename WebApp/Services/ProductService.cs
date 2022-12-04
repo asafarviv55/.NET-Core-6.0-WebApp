@@ -34,8 +34,7 @@ namespace WebApp.Services
                     using (var fileStream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
                     {
                         long size = file.Length;
-                        if (size > 200000
-                              && Array.IndexOf(new string[] { ".jpg", ".png" }, Path.GetExtension(file.FileName).ToString().ToLower()) < 0)
+                        if (Array.IndexOf(new string[] { ".jpeg", ".jpg", ".png" }, Path.GetExtension(file.FileName).ToString().ToLower()) < 0)
                         {
                             return;
                         }
@@ -54,7 +53,7 @@ namespace WebApp.Services
 
             foreach (var file in files)
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/");
+                string path = "Images/";
 
                 FileInfo fileInfo = new FileInfo(file.FileName);
 
@@ -178,7 +177,7 @@ namespace WebApp.Services
 
 
 
-        public static void AddProduct(int code, string name, string description)
+        public static void AddNewProduct(int code, string name, string description, String imagePath)
         {
             var products = new List<Product>();
             //to get the connection string 
@@ -188,7 +187,7 @@ namespace WebApp.Services
                 try
                 {
                     conn.Open();
-                    string commandtext = "AddProduct " + code + " , '" + name + "' , '" + description + "' ,'" + DateTime.Now + "' ";
+                    string commandtext = "AddNewProduct " + code + " , '" + name + "' , '" + description + "' ,'" + DateTime.Now + "' , '" + imagePath + "' ";
 
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
 
@@ -207,7 +206,7 @@ namespace WebApp.Services
 
         }
 
-        public static void updateProduct(int id, int code, string name, string description, string imagePath)
+        public static void UpdateProduct(int id, int code, string name, string description, string imagePath)
         {
             var products = new List<Product>();
             //to get the connection string 
@@ -217,7 +216,7 @@ namespace WebApp.Services
                 try
                 {
                     conn.Open();
-                    string commandtext = "UpdateProduct " + id + " , " + code + " , '" + name + "' , '" + description + "' ,'" + DateTime.Now + "' '" + imagePath + "' ";
+                    string commandtext = "UpdateProduct " + id + " , " + code + " , " + name + " , " + description + " , '" + DateTime.Now + "' , " + imagePath + " ";
 
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
 

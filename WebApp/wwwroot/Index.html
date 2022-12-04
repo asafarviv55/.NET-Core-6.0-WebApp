@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-xs-6">
                     <label for="searchBox">Create All Products </label>
-                    <input type="button" id="create" value="Reset All Products" v-on:click="create()" /><br>
+                    <input type="button" id="create" value="Reset All Products" v-on:click="initialProducts()" /><br>
                     <label for="searchBox">Search </label>
                     <input type="text" id="searchBox" value="" v-on:input="search" />
                 </div>
@@ -74,16 +74,17 @@
                             <td name="name">{{row.name}}</td>
                             <td name="description">{{row.description}}</td>
                             <td name="sell_date">{{row.sell_date}}</td>
+                            <button alt="aaa" type="button" value="Refresh" v-on:click="refreshData()">Refresh Table</button>
                             <td name="productImage">
                                 <div class="col-xs-6">
                                     <label></label>
-                                    <input v-if="row.imagePath" v-on:load="showMyImage(row.id)" />
+                                    <img v-if="row.imagePath" :src="row.imagePath" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />
+                                    <img v-else src="" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />
                                     <input v-else type="file" accept="image/*" @change="handleFileUpload(row.id);showMyImage(row.id)" />
-                                    <img src="" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />
-                                    <br />
-                                    <button v-on:click="submitFile()">Submit</button>
+                                    <button v-if="!row.imagePath" v-on:click="submitFile()">Submit</button>
                                 </div>
                             </td>
+
                             <td></td>
                             <td>
                                 <a href="#editProductModal" class="edit" data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date,row.imagePath)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -136,6 +137,7 @@
                         </div>
                         <div class="form-group">
                             <label></label>
+                            <label></label>
                             <input type="file" accept="image/*" @change="handleFileUpload(-1);showMyImage(-1)" />
                             <img src="" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />
                             <br />
@@ -173,13 +175,13 @@
                             <textarea class="form-control" value="" id="editDecription" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label>Image Path</label>
-                            <textarea class="form-control" value="" id="editImagePath" required></textarea>
+                            <label>Description</label>
+                            <textarea class="form-control" value="" id="editSellDate" required></textarea>
                         </div>
                         <div class="form-group">
                             <label></label>
-                            <input type="file" accept="image/*" @change="handleFileUpload(row.id);showMyImage(row.id)" />
-                            <img src="" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />.
+                            <input type="file" id="editImagePath" accept="image/*" @change="handleFileUpload(-1);showMyImage(-1)" />
+                            <img src=""  style="height: 40px; width: 40px;" name="thumbnil" alt="image" />.
                             <br />
                         </div>
                     </div>
