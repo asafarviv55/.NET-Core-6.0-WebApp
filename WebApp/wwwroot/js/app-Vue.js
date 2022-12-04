@@ -171,8 +171,8 @@ const App = {
 				addRow1() {
 					console.log("addRow1");
 					this.newCode1 = $('#newCode').val();
-					this.newName1 = $('#newDescription').val();
-					this.newDescription1 = $('#newName').val();
+					this.newName1 = $('#newName').val();
+					this.newDescription1 = $('#newDescription').val();
 
 					querystr = "https://localhost:7163/api/Products/AddNewProduct?code="+this.newCode1+"&name="+this.newName1+"&description="
 						+ this.newDescription1 + "&imagePath=" + this.newImagePath1 ;

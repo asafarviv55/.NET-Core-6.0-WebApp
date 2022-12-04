@@ -331,30 +331,7 @@ namespace WebApp.Services
             return products;
         }
 
-        public static void DeleteProduct(int id)
-        {
-            var products = new List<Product>();
-            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
-            using (SqlConnection conn = new SqlConnection(connectionstring))
-            {
-                try
-                {
-                    conn.Open();
-                    string commandtext = "DeleteProduct " + id;
-                    SqlCommand cmd = new SqlCommand(commandtext, conn);
-                    cmd.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    e.ToString();
-                }
-                finally
-                {
-                    conn.Close();
-                }
-            }
 
-        }
 
 
 

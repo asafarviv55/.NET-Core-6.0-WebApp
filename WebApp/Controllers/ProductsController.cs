@@ -93,11 +93,6 @@ namespace WebApp.Controllers
             return products;
         }
 
-        [HttpDelete]
-        public void DeleteProduct(int id)
-        {
-            ProductService.DeleteProduct(id);
-        }
 
 
 
