@@ -8,6 +8,14 @@ namespace WebApp.Services
     public class ProductService
     {
 
+        public static void FileUpload(IFormCollection formData)
+        {
+            SaveFileOnServer(formData);
+            SaveFilePathInDB(formData);
+        }
+
+
+
 
         private static void SaveFileOnServer(IFormCollection uploadedfile)
         {
@@ -16,9 +24,6 @@ namespace WebApp.Services
             foreach (var file in files)
             {
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images");
-
-
-
 
                 if (file.Length > 0)
                 {
@@ -40,12 +45,6 @@ namespace WebApp.Services
             }
         }
 
-        public static void FileUpload(IFormCollection formData)
-        {
-            SaveFileOnServer(formData);
-            SaveFilePathInDB(formData);
-        }
-
         private static void SaveFilePathInDB(IFormCollection formData)
         {
             //to get the connection string 
@@ -60,8 +59,6 @@ namespace WebApp.Services
                 FileInfo fileInfo = new FileInfo(file.FileName);
 
                 string fileName = file.FileName;
-
-
 
                 using (SqlConnection conn = new SqlConnection(connectionstring))
                 {
@@ -79,6 +76,10 @@ namespace WebApp.Services
                         cmd.ExecuteNonQuery();
 
                     }
+                    catch (Exception e)
+                    {
+                        e.ToString();
+                    }
                     finally
                     {
                         conn.Close();
@@ -89,35 +90,31 @@ namespace WebApp.Services
             }
         }
 
+
+
+
         public static void RecreateDB()
         {
-
             //to get the connection string 
             var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
-
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 try
                 {
                     conn.Open();
-
-                    string commandtext = "RecreateDB";
-
-
+                    string commandtext = "RecreateProducts";
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
-
-
                     cmd.ExecuteNonQuery();
-
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
                 }
                 finally
                 {
                     conn.Close();
-
                 }
-
             }
-
         }
 
         public static List<Product> InitialDB()
@@ -164,7 +161,10 @@ namespace WebApp.Services
 
                     //insert bulk Records into DataBase.  
                     objbulk.WriteToServer(dt);
-                    conn.Close();
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
                 }
                 finally
                 {
@@ -195,6 +195,10 @@ namespace WebApp.Services
                     cmd.ExecuteNonQuery();
 
                 }
+                catch (Exception e)
+                {
+                    e.ToString();
+                }
                 finally
                 {
                     conn.Close();
@@ -203,7 +207,7 @@ namespace WebApp.Services
 
         }
 
-        public static void updateProduct(int id, int code, string name, string description)
+        public static void updateProduct(int id, int code, string name, string description, string imagePath)
         {
             var products = new List<Product>();
             //to get the connection string 
@@ -213,11 +217,15 @@ namespace WebApp.Services
                 try
                 {
                     conn.Open();
-                    string commandtext = "UpdateProduct " + id + " , " + code + " , '" + name + "' , '" + description + "' ,'" + DateTime.Now + "' ";
+                    string commandtext = "UpdateProduct " + id + " , " + code + " , '" + name + "' , '" + description + "' ,'" + DateTime.Now + "' '" + imagePath + "' ";
 
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
 
                     cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
                 }
                 finally
                 {
@@ -252,7 +260,8 @@ namespace WebApp.Services
                             code = Convert.ToInt32(reader["code"]),
                             name = reader["name"].ToString(),
                             description = reader["description"].ToString(),
-                            sell_date = reader["sell_date"].ToString()
+                            sell_date = reader["sell_date"].ToString(),
+                            imagePath = reader["path"].ToString()
                         };
                         products.Add(product);
                     }
@@ -266,7 +275,10 @@ namespace WebApp.Services
                         aproducts.total = (int)reader["totalRows"];
                     }
                 }
-
+                catch (Exception e)
+                {
+                    e.ToString();
+                }
                 finally
                 {
                     conn.Close();
@@ -302,12 +314,16 @@ namespace WebApp.Services
                             code = Convert.ToInt32(reader["code"]),
                             name = reader["name"].ToString(),
                             description = reader["description"].ToString(),
-                            sell_date = reader["sell_date"].ToString()
+                            sell_date = reader["sell_date"].ToString(),
+                            imagePath = reader["path"].ToString()
                         };
                         products.Add(product);
                     }
                 }
-
+                catch (Exception e)
+                {
+                    e.ToString();
+                }
                 finally
                 {
                     conn.Close();
@@ -318,9 +334,7 @@ namespace WebApp.Services
 
         public static void DeleteProduct(int id)
         {
-
             var products = new List<Product>();
-            //to get the connection string 
             var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
@@ -328,17 +342,17 @@ namespace WebApp.Services
                 {
                     conn.Open();
                     string commandtext = "DeleteProduct " + id;
-
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
-
                     cmd.ExecuteNonQuery();
-
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
                 }
                 finally
                 {
                     conn.Close();
                 }
-
             }
 
         }
@@ -364,8 +378,6 @@ namespace WebApp.Services
                     foreach (var id in ids)
                         dt.Rows.Add(Int32.Parse(id));
 
-
-
                     var delete = new SqlCommand("DeleteMultipleProducts ", conn)
                     {
                         CommandType = CommandType.StoredProcedure
@@ -375,9 +387,10 @@ namespace WebApp.Services
 
                     delete.ExecuteNonQuery();
 
-
-
-
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
                 }
                 finally
                 {
@@ -394,44 +407,15 @@ namespace WebApp.Services
             var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
-                conn.Open();
-                string commandtext = "";
-                commandtext = "GetProductsOrderByColumn " + "'" + getColumnNameByNumber(orderCol) + "' , '" + getOrderDirectionByNumber(orderDirection) + "' ";
-
-
-
-                SqlCommand cmd = new SqlCommand(commandtext, conn);
-                var reader = cmd.ExecuteReader();
-                while (reader.Read())
+                try
                 {
-                    var product = new Product()
-                    {
-                        id = Convert.ToInt32(reader["id"]),
-                        code = Convert.ToInt32(reader["code"]),
-                        name = reader["name"].ToString(),
-                        description = reader["description"].ToString(),
-                        sell_date = reader["sell_date"].ToString()
-                    };
-                    products.Add(product);
-                }
-                conn.Close();
-            }
-            return products;
-        }
+                    conn.Open();
+                    string commandtext = "";
+                    commandtext = "GetProductsOrderByColumn " + "'" + getColumnNameByNumber(orderCol) + "' , '" + getOrderDirectionByNumber(orderDirection) + "' ";
 
-        public static List<Product> searchProduct(string searchStr)
-        {
-            var products = new List<Product>();
-            //to get the connection string 
-            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
-            using (SqlConnection con = new SqlConnection(connectionstring))
-            {
 
-                using (SqlCommand cmd = new SqlCommand("SearchByNameOrCode", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@str", searchStr);
-                    con.Open();
+
+                    SqlCommand cmd = new SqlCommand(commandtext, conn);
                     var reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -441,12 +425,62 @@ namespace WebApp.Services
                             code = Convert.ToInt32(reader["code"]),
                             name = reader["name"].ToString(),
                             description = reader["description"].ToString(),
-                            sell_date = reader["sell_date"].ToString()
+                            sell_date = reader["sell_date"].ToString(),
+                            imagePath = reader["path"].ToString()
                         };
                         products.Add(product);
                     }
                 }
-                con.Close();
+                catch (Exception e)
+                {
+                    e.ToString();
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+            return products;
+        }
+
+        public static List<Product> searchProduct(string searchStr)
+        {
+            var products = new List<Product>();
+            //to get the connection string 
+            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            using (SqlConnection conn = new SqlConnection(connectionstring))
+            {
+                try
+                {
+                    using (SqlCommand cmd = new SqlCommand("SearchByNameOrCode", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@str", searchStr);
+                        conn.Open();
+                        var reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var product = new Product()
+                            {
+                                id = Convert.ToInt32(reader["id"]),
+                                code = Convert.ToInt32(reader["code"]),
+                                name = reader["name"].ToString(),
+                                description = reader["description"].ToString(),
+                                sell_date = reader["sell_date"].ToString(),
+                                imagePath = reader["path"].ToString()
+                            };
+                            products.Add(product);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
+                }
+                finally
+                {
+                    conn.Close();
+                }
             }
             return products;
         }

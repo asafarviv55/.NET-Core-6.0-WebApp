@@ -16,10 +16,11 @@ namespace WebApp.Controllers
 
 
         [HttpGet]
-        public void InitialProducts()
+        public AProducts InitialProducts()
         {
             ProductService.RecreateDB();
             ProductService.InitialDB();
+            return ProductService.GetAllProducts();
         }
 
 
@@ -77,9 +78,9 @@ namespace WebApp.Controllers
 
 
         [HttpGet]
-        public void UpdateProduct(int id, int code, String name, String description)
+        public void UpdateProduct(int id, int code, String name, String description, String imagePath)
         {
-            ProductService.updateProduct(id, code, name, description);
+            ProductService.updateProduct(id, code, name, description, imagePath);
         }
 
 

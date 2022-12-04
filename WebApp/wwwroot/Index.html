@@ -53,14 +53,16 @@
                             <th style="width:300px" v-on:click="sort(3)">Description</th>
 
                             <th style="width:300px" v-on:click="sort(4)">Sell Date</th>
-                           
+
                             <th style="width:300px">Image</th>
 
 
                         </tr>
                     </thead>
-                    <tbody >
+                    <tbody>
+                        
                         <tr v-for="(row,index) in allProducts">
+
                             <td>
                                 <span class="custom-checkbox">
                                     <input type="checkbox" id="checkbox1" v-on:click="updateDeleteItems(row.id)" name="options[]" value="1">
@@ -75,27 +77,28 @@
                             <td name="productImage">
                                 <div class="col-xs-6">
                                     <label></label>
-                                    <input type="file" accept="image/*" @change="handleFileUpload(row.id);showMyImage(row.id)" />
-                                    <img   src="" style="height: 40px; width: 40px;" name="thumbnil"  alt="image" />
+                                    <input v-if="row.imagePath" v-on:load="showMyImage(row.id)" />
+                                    <input v-else type="file" accept="image/*" @change="handleFileUpload(row.id);showMyImage(row.id)" />
+                                    <img src="" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />
                                     <br />
                                     <button v-on:click="submitFile()">Submit</button>
                                 </div>
-                             </td>
+                            </td>
                             <td></td>
                             <td>
-                               <a href="#editProductModal" class="edit" data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                               <a href="#deleteProductModal" class="delete" data-toggle="modal"><i value="Delete" v-on:click="updateDeleteItem(row.id)" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                <a href="#editProductModal" class="edit" data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date,row.imagePath)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                <a href="#deleteProductModal" class="delete" data-toggle="modal"><i value="Delete" v-on:click="updateDeleteItem(row.id)" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                             </td>
                         </tr>
                     </tbody>
-         
+
 
                 </table>
 
 
             </div>
         </div>
-        <div  style="margin-top: 70px;">
+        <div style="margin-top: 70px;">
             <div style="float: left; width: 50%; ">
                 <ul class="pagination">
                     <li v-for="(row,index) in numberOfPages" class="page-item">
@@ -131,10 +134,16 @@
                             <label>Description</label>
                             <textarea id="newDescription" value="" class="form-control" required></textarea>
                         </div>
+                        <div class="form-group">
+                            <label></label>
+                            <input type="file" accept="image/*" @change="handleFileUpload(-1);showMyImage(-1)" />
+                            <img src="" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />
+                            <br />
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" />
-                        <input type="button" value="Add" v-on:click="addRow1()" data-dismiss="modal" id="addRow" />
+                        <input type="button" value="Add" v-on:click="addRow1();submitFile()" data-dismiss="modal" id="addRow" />
                     </div>
                 </div>
             </div>
@@ -163,10 +172,20 @@
                             <label>Description</label>
                             <textarea class="form-control" value="" id="editDecription" required></textarea>
                         </div>
+                        <div class="form-group">
+                            <label>Image Path</label>
+                            <textarea class="form-control" value="" id="editImagePath" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label></label>
+                            <input type="file" accept="image/*" @change="handleFileUpload(row.id);showMyImage(row.id)" />
+                            <img src="" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />.
+                            <br />
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="button" value="Save" v-on:click="submitModalInputs()" data-dismiss="modal" id="editRow" />
+                        <input type="button" value="Save" v-on:click="submitModalInputs();submitFile();" data-dismiss="modal" id="editRow" />
                     </div>
                 </div>
             </div>
