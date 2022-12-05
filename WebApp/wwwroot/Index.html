@@ -80,11 +80,10 @@
                                     <label></label>
                                     <img v-if="row.imagePath" :src="row.imagePath" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />
                                     <img v-else src="" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />
-                                    <input v-else type="file" accept="image/*" @change="handleFileUpload(row.id);showMyImage(row.id)" />
+                                    <input v-else type="file" accept="image/*" @change="handleFileUpload(row.id,'add');showMyImage(row.id,'add')" />
                                     <button v-if="!row.imagePath" v-on:click="submitFile()">Submit</button>
                                 </div>
                             </td>
-
                             <td></td>
                             <td>
                                 <a href="#editProductModal" class="edit" data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date,row.imagePath)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -138,8 +137,8 @@
                         <div class="form-group">
                             <label></label>
                             <label></label>
-                            <input type="file" accept="image/*" @change="handleFileUpload(-1);showMyImage(-1)" />
-                            <img src="" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />
+                            <input type="file" accept="image/*" @change="handleFileUpload(-1,'add');showMyImage(-1,'add')" />
+                            <img src=""  id="addImagePath" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />
                             <br />
                         </div>
                     </div>
@@ -180,8 +179,8 @@
                         </div>
                         <div class="form-group">
                             <label></label>
-                            <input type="file" id="editImagePath" accept="image/*" @change="handleFileUpload(-1);showMyImage(-1)" />
-                            <img src=""  style="height: 40px; width: 40px;" name="thumbnil" alt="image" />.
+                            <input type="file"  accept="image/*" @change="handleFileUpload(-1,'edit');showMyImage(-1,'edit');" />
+                            <img src="" id="editImagePath" style="height: 40px; width: 40px;" name="thumbnil" alt="image" />.
                             <br />
                         </div>
                     </div>

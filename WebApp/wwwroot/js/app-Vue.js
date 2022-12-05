@@ -1,115 +1,129 @@
 
 const App = {
-	  mounted() {
-		console.log("enter mounted");
+			  mounted() {
+				console.log("enter mounted");
 
-		//this.initialProducts();
-		//this.refreshData();
-		this.firstLoading();
-	},
-	updated() {
-		console.log("updated");
+				//this.initialProducts();
+				//this.refreshData();
+				this.firstLoading();
+			},
+			updated() {
+				console.log("updated");
 
  
-		$("#myTable tr").each(function (index) {// index is the position of the current tr in the table ,ele is the tr
-			$("td[name='productImage']", this).each(function () {
-				$(this).find("img").attr('id', "thumbnil_" + index);
-			});
-		});
+				
+			},
+			data() {
+				return {
+					items: [],
+					allProducts: [],
+					rKey: 0,
+					page: 1,
+					sortColumn: 1,
+					sortDirection: 1,
+					filterString: '',
+					offset: 1,
+					searctStr: '',
+					newCode1: '',
+					newDescription1: '',
+					newName1: '',
+					newSell_date1: '',
+					newImagePath1: '',
+					deleteItemOptional: -1,
+					deleteItemsOptional: "",
+					totalRows: 20,
+					rowsPerPage1: 5,
+					numberOfPages: 4,
+					file: '',
+					fileUploadProductId: -1,
+					previewUrl: '',
+					thumbId: 0, 
+					formData : new FormData()
+				}
+			},
+			methods: {
+					firstLoading() {
+						//this.reset();
+						querystr = "https://localhost:7163/api/Products/GetAllProducts";
+						axios.get(querystr).then(response => {
 
-
-
-
-	},
-	data() {
-		return {
-			items: [],
-			allProducts: [],
-			rKey: 0,
-			page: 1,
-			sortColumn: 1,
-			sortDirection: 1,
-			filterString: '',
-			offset: 1,
-			searctStr: '',
-			newCode1: '',
-			newDescription1: '',
-			newName1: '',
-			newSell_date1: '',
-			newImagePath1: '',
-			deleteItemOptional: -1,
-			deleteItemsOptional: "",
-			totalRows: 20,
-			rowsPerPage1: 5,
-			numberOfPages: 4,
-			file: '',
-			fileUploadProductId: 1,
-			previewUrl: '',
-			thumbId: 0, 
-			formData : new FormData()
-		}
-	},
-	methods: {
-				firstLoading() {
-					querystr = "https://localhost:7163/api/Products/GetAllProducts";
-					axios.get(querystr).then(response => {
-
-						this.allProducts = response.data.products;
-						this.totalRows = response.data.total;
-						this.rowsPerPage1 = this.totalRows;
-						this.numberOfPages = Math.ceil(this.totalRows / this.rowsPerPage1);
-						this.rKey++;
-						var x = document.getElementById("numOfPagesSelect");
-						var option = document.createElement("option");
-						option.text = this.totalRows;
-						option.value = this.totalRows;
-						option.name = "pages"
-						x.add(option);
-
-						const ddNumOfRows = [Math.ceil(this.totalRows / 5), Math.ceil(this.totalRows / 4), Math.ceil(this.totalRows / 3), Math.ceil(this.totalRows / 2)];
-						ddNumOfRows.sort();
-						for (var i = 0; i < ddNumOfRows.length; i++) {
-							option = document.createElement("option");
-							option.text = ddNumOfRows[i];
-							option.value = ddNumOfRows[i];
+							this.allProducts = response.data.products;
+							this.totalRows = response.data.total;
+							this.rowsPerPage1 = this.totalRows;
+							this.numberOfPages = Math.ceil(this.totalRows / this.rowsPerPage1);
+							this.rKey++;
+							var x = document.getElementById("numOfPagesSelect");
+							$("#numOfPagesSelect").empty();
+							var option = document.createElement("option");
+							option.text = this.totalRows;
+							option.value = this.totalRows;
 							option.name = "pages"
 							x.add(option);
-						}
+
+							const ddNumOfRows = [Math.ceil(this.totalRows / 5), Math.ceil(this.totalRows / 4), Math.ceil(this.totalRows / 3), Math.ceil(this.totalRows / 2)];
+							ddNumOfRows.sort();
+							for (var i = 0; i < ddNumOfRows.length; i++) {
+								option = document.createElement("option");
+								option.text = ddNumOfRows[i];
+								option.value = ddNumOfRows[i];
+								option.name = "pages"
+								x.add(option);
+							}
+						});
+
+					$("#myTable tr").each(function (index) {// index is the position of the current tr in the table ,ele is the tr
+						$("td[name='productImage']", this).each(function () {
+							$(this).find("img").attr('id', "thumbnil_" + index);
+						});
 					});
-				},
 
-				initialProducts() {
-					querystr = "https://localhost:7163/api/Products/InitialProducts";
-					axios.get(querystr).then(response => {
 
-						this.allProducts = response.data.products;
-						this.totalRows = response.data.total;
-						this.rowsPerPage1 = this.totalRows;
-						this.numberOfPages = Math.ceil(this.totalRows / this.rowsPerPage1);
-						this.rKey++;
-						var x = document.getElementById("numOfPagesSelect");
-						var option = document.createElement("option");
-						option.text = this.totalRows;
-						option.value = this.totalRows;
-						option.name = "pages"
-						x.add(option);
+					},
+					reset() {
+						console.log("reset");
+									Object.assign(this.$data, this.$options.data());
+					},
+					initialProducts() {
+						console.log("initialProducts");
+						this.reset();
+						querystr = "https://localhost:7163/api/Products/InitialProducts";
+						axios.get(querystr).then(response => {
 
-						const ddNumOfRows = [Math.ceil(this.totalRows / 5), Math.ceil(this.totalRows / 4), Math.ceil(this.totalRows / 3), Math.ceil(this.totalRows / 2)];
-						ddNumOfRows.sort();
-						for (var i = 0; i < ddNumOfRows.length; i++) {
-							option = document.createElement("option");
-							option.text = ddNumOfRows[i];
-							option.value = ddNumOfRows[i];
+							this.allProducts = response.data.products;
+							this.totalRows = response.data.total;
+							this.rowsPerPage1 = this.totalRows;
+							this.numberOfPages = Math.ceil(this.totalRows / this.rowsPerPage1);
+							this.rKey++;
+							$("#numOfPagesSelect").empty();
+							var x = document.getElementById("numOfPagesSelect");
+							var option = document.createElement("option");
+							option.text = this.totalRows;
+							option.value = this.totalRows;
 							option.name = "pages"
 							x.add(option);
-						}
-					});
+
+							const ddNumOfRows = [Math.ceil(this.totalRows / 5), Math.ceil(this.totalRows / 4), Math.ceil(this.totalRows / 3), Math.ceil(this.totalRows / 2)];
+							ddNumOfRows.sort();
+							for (var i = 0; i < ddNumOfRows.length; i++) {
+								option = document.createElement("option");
+								option.text = ddNumOfRows[i];
+								option.value = ddNumOfRows[i];
+								option.name = "pages"
+								x.add(option);
+							}
+						});
 				},
-				handleFileUpload(id) {
-					console.log("handleFileUpload");
+				handleFileUpload(id, action) {
+					this.reset();
+					console.log("handleFileUpload id=" + id);
 					this.file = event.target.files[0];
 					this.thumbId = id;
-					this.fileUploadProductId = id;
+					if (action == 'add') {
+						this.fileUploadProductId = id;
+					}
+                    else {
+						this.fileUploadProductId = $("#editID").val();
+                    }
 					this.newImagePath1 = "Images/" + event.target.files[0].name;
 					console.log(this.newImagePath1);
 				},
@@ -118,17 +132,29 @@ const App = {
 					 
 					$("#thumbnil_" + id).attr('src', image);
 				},
-				showMyImage(id) { 
+				showMyImage(id,action) { 
 					console.log("showMyImage");
 					const file = event.target.files[0];
 					const url = URL.createObjectURL(file);
-					$("#thumbnil_" + id).attr('src', url);
+					if (id != -1 || this.fileUploadProductId != -1) {
+						$("#thumbnil_" + id).attr('src', url);
+					}
+					else if (action == 'add') {
+						$("#addImagePath").attr('src', url); 
+					}
+					else if (action == 'edit')
+					{
+						$("#editImagePath").attr('src', url); 
+						this.fileUploadProductId = $("#editID").val();
+					}
+					
 				},
 				submitFile() {
 					console.log("submitFile");
 					formData1 = new FormData();
 					formData1.append('file', this.file);
 					formData1.append('id', this.fileUploadProductId);
+					
 					 axios.post('https://localhost:7163/api/Products/FileUpload',
 						formData1,
 						{
@@ -140,9 +166,9 @@ const App = {
 						console.log('upload file SUCCESS!!');
 						this.refreshData();
 					})
-						.catch(function () {
-							console.log('upload file FAILURE!!');
-						});
+					.catch(response => {
+						console.log('upload file FAILURE!!');
+					});
 				},
 				changeNumOfRows() {
 					console.log("changeNumOfRows");
@@ -203,7 +229,7 @@ const App = {
 					querystr = "https://localhost:7163/api/Products/UpdateProduct?id="
 						+ $('#editID').val()
 						+ "&code=" + $('#editCode').val()
-						+ "&name='" + $('#editName').val() + "'"
+						+ "&name='" + $('#editName').val() +"'"
 						+ "&description='" + $('#editDecription').val() + "'"
 						+ "&imagePath='" + this.newImagePath1 + "'";
 					console.log(querystr);

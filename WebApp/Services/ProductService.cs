@@ -20,27 +20,35 @@ namespace WebApp.Services
         private static void SaveFileOnServer(IFormCollection uploadedfile)
         {
             var files = uploadedfile.Files;
-
-            foreach (var file in files)
+            try
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images");
-
-                if (file.Length > 0)
+                foreach (var file in files)
                 {
-                    FileInfo fileInfo = new FileInfo(file.FileName);
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images");
 
-                    string fileName = file.FileName;
-
-                    using (var fileStream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                    if (file.Length > 0)
                     {
-                        long size = file.Length;
-                        if (Array.IndexOf(new string[] { ".jpeg", ".jpg", ".png" }, Path.GetExtension(file.FileName).ToString().ToLower()) < 0)
+                        FileInfo fileInfo = new FileInfo(file.FileName);
+
+                        string fileName = file.FileName;
+
+                        using (var fileStream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
                         {
-                            return;
+                            long size = file.Length;
+                            if (Array.IndexOf(new string[] { ".jpeg", ".jpg", ".png" }, Path.GetExtension(file.FileName).ToString().ToLower()) < 0)
+                            {
+                                return;
+                            }
+                            file.CopyToAsync(fileStream);
                         }
-                        file.CopyToAsync(fileStream);
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("{0} Exception caught.", e);
+
+                throw new Exception(e.Message, e);
             }
         }
 
@@ -77,7 +85,9 @@ namespace WebApp.Services
                     }
                     catch (Exception e)
                     {
-                        e.ToString();
+                        Console.WriteLine("{0} Exception caught.", e);
+
+                        throw new Exception(e.Message, e);
                     }
                     finally
                     {
@@ -107,7 +117,9 @@ namespace WebApp.Services
                 }
                 catch (Exception e)
                 {
-                    e.ToString();
+                    Console.WriteLine("{0} Exception caught.", e);
+
+                    throw new Exception(e.Message, e);
                 }
                 finally
                 {
@@ -163,7 +175,9 @@ namespace WebApp.Services
                 }
                 catch (Exception e)
                 {
-                    e.ToString();
+                    Console.WriteLine("{0} Exception caught.", e);
+
+                    throw new Exception(e.Message, e);
                 }
                 finally
                 {
@@ -196,7 +210,9 @@ namespace WebApp.Services
                 }
                 catch (Exception e)
                 {
-                    e.ToString();
+                    Console.WriteLine("{0} Exception caught.", e);
+
+                    throw new Exception(e.Message, e);
                 }
                 finally
                 {
@@ -218,13 +234,17 @@ namespace WebApp.Services
                     conn.Open();
                     string commandtext = "UpdateProduct " + id + " , " + code + " , " + name + " , " + description + " , '" + DateTime.Now + "' , " + imagePath + " ";
 
+                    Console.WriteLine(commandtext);
+
                     SqlCommand cmd = new SqlCommand(commandtext, conn);
 
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception e)
                 {
-                    e.ToString();
+                    Console.WriteLine("{0} Exception caught.", e);
+
+                    throw new Exception(e.Message, e);
                 }
                 finally
                 {
@@ -276,7 +296,8 @@ namespace WebApp.Services
                 }
                 catch (Exception e)
                 {
-                    e.ToString();
+                    Console.WriteLine("{0} Exception caught.", e);
+                    throw new Exception(e.Message, e);
                 }
                 finally
                 {
@@ -321,7 +342,9 @@ namespace WebApp.Services
                 }
                 catch (Exception e)
                 {
-                    e.ToString();
+                    Console.WriteLine("{0} Exception caught.", e);
+
+                    throw new Exception(e.Message, e);
                 }
                 finally
                 {
@@ -366,7 +389,9 @@ namespace WebApp.Services
                 }
                 catch (Exception e)
                 {
-                    e.ToString();
+                    Console.WriteLine("{0} Exception caught.", e);
+
+                    throw new Exception(e.Message, e);
                 }
                 finally
                 {
@@ -409,7 +434,9 @@ namespace WebApp.Services
                 }
                 catch (Exception e)
                 {
-                    e.ToString();
+                    Console.WriteLine("{0} Exception caught.", e);
+
+                    throw new Exception(e.Message, e);
                 }
                 finally
                 {
@@ -451,7 +478,9 @@ namespace WebApp.Services
                 }
                 catch (Exception e)
                 {
-                    e.ToString();
+                    Console.WriteLine("{0} Exception caught.", e);
+
+                    throw new Exception(e.Message, e);
                 }
                 finally
                 {
