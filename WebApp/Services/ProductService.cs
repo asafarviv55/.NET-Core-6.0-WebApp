@@ -10,14 +10,14 @@ namespace WebApp.Services
 
         public static void FileUpload(IFormCollection formData)
         {
-            SaveFileOnServer(formData);
-            SaveFilePathInDB(formData);
+            saveFileOnServer(formData);
+            saveFilePathInDB(formData);
         }
 
 
 
 
-        private static void SaveFileOnServer(IFormCollection uploadedfile)
+        private static void saveFileOnServer(IFormCollection uploadedfile)
         {
             var files = uploadedfile.Files;
             try
@@ -52,10 +52,10 @@ namespace WebApp.Services
             }
         }
 
-        private static void SaveFilePathInDB(IFormCollection formData)
+        private static void saveFilePathInDB(IFormCollection formData)
         {
             //to get the connection string 
-            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            var connectionstring = "Server=localhost,1433;Database=storedb;User ID=admin;Password=Wvyf3691!";
 
             var files = formData.Files;
 
@@ -73,7 +73,7 @@ namespace WebApp.Services
                     {
                         conn.Open();
 
-                        string commandtext = "SavePathOfFile '" + path + fileName + "' , " + formData["id"].ToString();
+                        string commandtext = "savePathOfFile '" + path + fileName + "' , " + formData["id"].ToString();
 
                         Console.WriteLine(commandtext);
 
@@ -105,7 +105,7 @@ namespace WebApp.Services
         public static void RecreateDB()
         {
             //to get the connection string 
-            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            var connectionstring = "Server=localhost,1433;Database=storedb;User ID=admin;Password=Wvyf3691!";
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 try
@@ -132,7 +132,7 @@ namespace WebApp.Services
         {
             var products = new List<Product>();
             //to get the connection string 
-            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            var connectionstring = "Server=localhost,1433;Database=storedb;User ID=admin;Password=Wvyf3691!";
 
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
@@ -195,7 +195,7 @@ namespace WebApp.Services
         {
             var products = new List<Product>();
             //to get the connection string 
-            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            var connectionstring = "Server=localhost,1433;Database=storedb;User ID=admin;Password=Wvyf3691!";
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 try
@@ -226,7 +226,7 @@ namespace WebApp.Services
         {
             var products = new List<Product>();
             //to get the connection string 
-            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            var connectionstring = "Server=localhost,1433;Database=storedb;User ID=admin;Password=Wvyf3691!";
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 try
@@ -259,7 +259,7 @@ namespace WebApp.Services
             var aproducts = new AProducts();
             var products = new List<Product>();
             //to get the connection string 
-            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            var connectionstring = "Server=localhost,1433;Database=storedb;User ID=admin;Password=Wvyf3691!";
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 try
@@ -313,7 +313,7 @@ namespace WebApp.Services
         {
             var products = new List<Product>();
             //to get the connection string 
-            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            var connectionstring = "Server=localhost,1433;Database=storedb;User ID=admin;Password=Wvyf3691!";
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 try
@@ -363,7 +363,7 @@ namespace WebApp.Services
         {
             var products = new List<Product>();
             //to get the connection string 
-            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            var connectionstring = "Server=localhost,1433;Database=storedb;User ID=admin;Password=Wvyf3691!";
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 try
@@ -405,7 +405,7 @@ namespace WebApp.Services
         public static List<Product> GetAllProductsOrderBy(int orderCol, int orderDirection)
         {
             var products = new List<Product>();
-            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            var connectionstring = "Server=localhost,1433;Database=storedb;User ID=admin;Password=Wvyf3691!";
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 try
@@ -450,7 +450,7 @@ namespace WebApp.Services
         {
             var products = new List<Product>();
             //to get the connection string 
-            var connectionstring = "Server=localhost,1433;Database=storedb;User Id=sa;Password=wvyf3691!";
+            var connectionstring = "Server=localhost,1433;Database=storedb;User ID=admin;Password=Wvyf3691!";
             using (SqlConnection conn = new SqlConnection(connectionstring))
             {
                 try
