@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Primitives;
+using Org.BouncyCastle.Math;
 using System.Data;
 using System.Data.SqlClient;
 using WebApp.Models;
@@ -359,7 +360,7 @@ namespace WebApp.Services
 
 
 
-        public static void DeleteProducts(StringValues ids)
+        public static void DeleteProducts(List<int> ids)
         {
             var products = new List<Product>();
             //to get the connection string 
@@ -372,10 +373,10 @@ namespace WebApp.Services
 
                     var dt = new DataTable();
 
-                    dt.Columns.Add("Id", typeof(Int32));
+                    dt.Columns.Add("Id", typeof(int));
 
                     foreach (var id in ids)
-                        dt.Rows.Add(Int32.Parse(id));
+                        dt.Rows.Add(id);
 
                     var delete = new SqlCommand("DeleteMultipleProducts ", conn)
                     {

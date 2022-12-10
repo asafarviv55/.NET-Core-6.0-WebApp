@@ -9,7 +9,8 @@ const App = {
 			},
 			updated() {
 				console.log("updated");
-
+				//formData = new FormData();
+				//deletedItems = [];
  
 				
 			},
@@ -38,7 +39,8 @@ const App = {
 					fileUploadProductId: -1,
 					previewUrl: '',
 					thumbId: 0, 
-					formData : new FormData()
+					formData: new FormData(),
+					deletedItems:[]
 				}
 			},
 			methods: {
@@ -238,20 +240,18 @@ const App = {
 					});
 				},
 
+ 
 
 
-			
-				updateDeleteItem(idsAsString) {
-					console.log("updateDeleteItem");
-					this.formData = new FormData();
-					this.formData.append('id', idsAsString);
-				},
-				updateDeleteItems(idsAsString) {
-					console.log("updateDeleteItems");
-					this.formData.append('id', idsAsString);
-				},
+
 		        deleteItems() {
 					console.log("deleteItems");
+					
+					this.formData = new FormData();
+					var items = this.deletedItems;
+					for (var i = 0; i < items.length; i++) {
+						this.formData.append("" + (i+1),items[i]);
+					}
 					axios.post('https://localhost:7163/api/Products/DeleteProducts',
 					this.formData,
 					{

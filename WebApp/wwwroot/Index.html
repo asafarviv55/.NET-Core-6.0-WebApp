@@ -61,12 +61,11 @@
                     </thead>
                     <tbody>
                         
-                        <tr v-for="(row,index) in allProducts">
+                        <tr v-for="(row,index) in allProducts" v-bind:id="'row_'+row.id">
 
                             <td>
                                 <span class="custom-checkbox">
-                                    <input type="checkbox" id="checkbox1" v-on:click="updateDeleteItems(row.id)" name="options[]" value="1">
-                                    <label for="checkbox1"></label>
+                                     <input type="checkbox" :id="'checkbox_' + row.id" v-model="deletedItems" :value="row.id">
                                 </span>
                             </td>
                             <td hidden>{{row.id}}</td>

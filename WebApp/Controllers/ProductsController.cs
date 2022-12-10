@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using Org.BouncyCastle.Math;
 using WebApp.Models;
 using WebApp.Services;
 
@@ -99,8 +100,13 @@ namespace WebApp.Controllers
         [HttpPost]
         public void DeleteProducts(IFormCollection form)
         {
-            form.TryGetValue("id", out StringValues ids);
-            ProductService.DeleteProducts(ids);
+            List<int> list = new List<int>();
+            foreach (KeyValuePair<string, StringValues> item in form)
+            {
+                int result  = Int32.Parse(item.Value);
+                list.Add(result);
+            }
+            ProductService.DeleteProducts(list);
         }
 
 
