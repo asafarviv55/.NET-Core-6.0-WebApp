@@ -46,7 +46,7 @@ const App = {
 			methods: {
 					firstLoading() {
 						//this.reset();
-						querystr = "https://localhost:7163/api/Products/GetAllProducts";
+						querystr = baseUrl + "/Products/GetAllProducts";
 						axios.get(querystr).then(response => {
 
 							this.allProducts = response.data.products;
@@ -88,7 +88,7 @@ const App = {
 					initialProducts() {
 						console.log("initialProducts");
 						this.reset();
-						querystr = "https://localhost:7163/api/Products/InitialProducts";
+						querystr = baseUrl + "/Products/InitialProducts";
 						axios.get(querystr).then(response => {
 
 							this.allProducts = response.data.products;
@@ -157,7 +157,7 @@ const App = {
 					formData1.append('file', this.file);
 					formData1.append('id', this.fileUploadProductId);
 					
-					 axios.post('https://localhost:7163/api/Products/FileUpload',
+					axios.post(baseUrl + "/Products/FileUpload",
 						formData1,
 						{
 							headers: {
@@ -179,7 +179,7 @@ const App = {
 					}
 					this.rowsPerPage1 = event.target.value;
 					this.numberOfPages = Math.ceil(this.totalRows / this.rowsPerPage1);
-					querystr = "https://localhost:7163/api/Products/Paging?offset=0&rowsPerPage=" + this.rowsPerPage1;
+					querystr = baseUrl + "/Products/Paging?offset=0&rowsPerPage=" + this.rowsPerPage1;
 					axios.get(querystr).then(response => {
  						this.allProducts = response.data;
  					});
@@ -191,7 +191,7 @@ const App = {
 					else {
 						this.offset = ((page - 1) * this.rowsPerPage1) ;
 					}
- 					querystr = "https://localhost:7163/api/Products/Paging?offset=" + this.offset + "&rowsPerPage=" + this.rowsPerPage1;
+					querystr = baseUrl + "/Products/Paging?offset=" + this.offset + "&rowsPerPage=" + this.rowsPerPage1;
 					axios.get(querystr).then(response => {
  						this.allProducts = response.data;
  					});
@@ -202,7 +202,7 @@ const App = {
 					this.newName1 = $('#newName').val();
 					this.newDescription1 = $('#newDescription').val();
 
-					querystr = "https://localhost:7163/api/Products/AddNewProduct?code="+this.newCode1+"&name="+this.newName1+"&description="
+					querystr = baseUrl + "/Products/AddNewProduct?code="+this.newCode1+"&name="+this.newName1+"&description="
 						+ this.newDescription1 + "&imagePath=" + this.newImagePath1 ;
 					axios.get(querystr).then(response => {
 						this.refreshData();
@@ -210,7 +210,7 @@ const App = {
 				},
 				create() {
 					console.log("create");
-					querystr = "https://localhost:7163/api/Products/InitialProducts";
+					querystr = baseUrl + "/Products/InitialProducts";
 					axios.get(querystr).then(response => {
 						this.refreshData();
 					});
@@ -228,7 +228,7 @@ const App = {
 		
 				submitModalInputs() {
 					console.log("submitModalInputs");
-					querystr = "https://localhost:7163/api/Products/UpdateProduct?id="
+					querystr = baseUrl + "/Products/UpdateProduct?id="
 						+ $('#editID').val()
 						+ "&code=" + $('#editCode').val()
 						+ "&name='" + $('#editName').val() +"'"
@@ -241,18 +241,33 @@ const App = {
 				},
 
  
-
-
-
-		        deleteItems() {
-					console.log("deleteItems");
-					
+				updateDeleteItem(idsAsString) {
+					console.log("updateDeleteItem");
 					this.formData = new FormData();
-					var items = this.deletedItems;
-					for (var i = 0; i < items.length; i++) {
-						this.formData.append("" + (i+1),items[i]);
+					this.formData.append('id', idsAsString);
+				},
+				updateDeleteItems(idsAsString) {
+					console.log("updateDeleteItems");
+					this.formData.append('id', idsAsString);
+				},
+
+
+
+				deleteItems(id) {
+					console.log("deleteItems");
+					if (this.deletedItems.length == 0) {
+						alert("No row was Checked ! Action will be Cancelled ");
+						return;
 					}
-					axios.post('https://localhost:7163/api/Products/DeleteProducts',
+					if (id == undefined || id == null) {
+						this.formData = new FormData();
+						var items = this.deletedItems;
+						
+						for (var i = 0; i < items.length; i++) {
+							this.formData.append("" + (i + 1), items[i]);
+						}
+					}
+					axios.post(baseUrl + '/Products/DeleteProducts',
 					this.formData,
 					{
 						headers: {
@@ -276,7 +291,7 @@ const App = {
 						this.sortDirection = 0;
 					else
 						this.sortDirection = 1;
-					var querystr = "https://localhost:7163/api/Products/GetAllProductsOrderBy?orderCol=" + col + "&orderDirection=" + this.sortDirection;
+					var querystr = baseUrl + "/Products/GetAllProductsOrderBy?orderCol=" + col + "&orderDirection=" + this.sortDirection;
 					axios.get(querystr)
 						.then(response => {
 							this.allProducts = response.data;
@@ -289,7 +304,7 @@ const App = {
 					if (this.searctStr == '' || this.searctStr == undefined)
 						this.refreshData();
 					else
-						axios.get("https://localhost:7163/api/Products/SearchProducts?str=" + this.searctStr)
+						axios.get(baseUrl + "/Products/SearchProducts?str=" + this.searctStr)
 							.then(response => {
 								this.allProducts = response.data;
 								this.rKey++;
@@ -297,7 +312,7 @@ const App = {
 				},
 				refreshData() {
 					console.log("refreshData");
-					querystr = "https://localhost:7163/api/Products/GetAllProducts";
+					querystr = baseUrl + "/Products/GetAllProducts";
 					axios.get(querystr)
 						.then(response => {
 							console.log(response.data);
@@ -312,5 +327,7 @@ const App = {
 };
 
 const app = Vue.createApp(App);
+
+const baseUrl = "https://localhost:7163/api";
 
 app.mount("#app");

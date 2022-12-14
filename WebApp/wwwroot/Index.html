@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-xs-6">
                     <a href="#addProductModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Product</span></a>
-                    <a href="#deleteProductModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>
+                    <input type="button" href="#deleteProductModal" v-on:click="verifyChecked()" class="btn btn-danger"  data-toggle="modal"><span>Delete</span></input>
                 </div>
                 <div class="col-xs-6">
                     <label for="searchBox">Create All Products </label>
@@ -65,7 +65,7 @@
 
                             <td>
                                 <span class="custom-checkbox">
-                                     <input type="checkbox" :id="'checkbox_' + row.id" v-model="deletedItems" :value="row.id">
+                                     <input type="checkbox" :id="'checkbox_' + row.id" name="checkboxes" v-model="deletedItems" :value="row.id">
                                 </span>
                             </td>
                             <td hidden>{{row.id}}</td>
@@ -86,7 +86,7 @@
                             <td></td>
                             <td>
                                 <a href="#editProductModal" class="edit" data-toggle="modal"><i class="material-icons" v-on:click="sendItemsfromGridToModal(row.id,row.code,row.name,row.description,row.sell_date,row.imagePath)" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteProductModal" class="delete" data-toggle="modal"><i value="Delete" v-on:click="updateDeleteItem(row.id)" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                <a href="#deleteProductModal" class="delete" data-toggle="modal"><i value="Delete" v-on:click="deletedItems = []; deletedItems.push(row.id);" class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                             </td>
                         </tr>
                     </tbody>
